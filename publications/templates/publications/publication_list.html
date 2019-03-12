@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}You sales{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_bar.html'%}
+<style></style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="text-center mx-auto">
+            <div id="carousel1" class="carousel slide carousel-fade" data-ride="carousel" data-interval="5000">
+                <div class="carousel-inner">
+                    <div class="carousel-item"> <img class="d-block w-100 img-fluid" src="{% static 'core/img/Banner-3.png' %}">
+                    </div>
+                    <div class="carousel-item "> <img class="d-block w-100" src="{% static 'core/img/Banner-2.png' %}">
+                    </div>
+                    <div class="carousel-item active"> <img class="d-block w-100" src="{% static 'core/img/Banner-1.png' %}">
+                    </div>
+                </div>
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel1" data-slide-to="0" class=""> </li>
+                    <li data-target="#carousel1" data-slide-to="1"> </li>
+                    <li data-target="#carousel1" data-slide-to="2" class="active"> </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-secondary">
+                    <div class="card-body text-white">
+                        <div class="row pi-draggable" draggable="true">
+                            <div class="text-center col-sm-4 col-lg-4 col-12 col-md-12">
+                                <h4 class="">Paga cómodo y seguro</h4>
+                                <hr class="bg-primary">
+                                <p> Aceptamos tarjetas de crédito, débito y PayPal</p>
+                            </div>
+                            <div class="text-center col-lg-4 col-6 col-sm-4 col-md-6"><i class="fa fa-credit-card-alt fa-5x"></i></div>
+                            <div class="text-center col-sm-4 col-lg-4 col-6 col-md-6"><i class="fa fa-cc-paypal fa-5x"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="py-4 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-5">Encuentra los mejores precios en <img src="{% static 'core/img/USALESTK.png' %}" height="50"></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="text-center py-4">
+    <div class="container">
+        <div class="row">
+            <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
+            {% if object_list %}
+            {% for publication in object_list %}
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 py-3">
+                <div class="card card-zoom bg-light">
+                    <div class="bg-white">
+
+                        <a href="{% url 'publications:publication' publication.id publication.product|slugify %}">
+                            <img class="img-fluid d-block mx-auto" style="height:170px" src="{{publication.picture.url}}">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title"><b>${{publication.price}}</b></h4>
+                        <p class="card-text">{{publication.product}}</p>
+                        <hr>
+
+                        <button class="btn btn-primary mx-block disabled"><i class="fa fa-shopping-cart"></i></button>
+                    </div>
+
+                    <input type="text" name="publication" id="publication" value="{{publication.id}}" style="display:none">
+                    {% if wishlist %}
+                    <!-- loop to check all the items in the wishlist-->
+                    {% for deseo in wishlist %}
+                    <!-- if publication_id equals to publication.id, it means the publication is in wishlist, so render - button to delete it -->
+                    {% if deseo.publication_id == publication.id %}
+                    <button name="delete" class="btn btn-secondary mx-block" style="position:absolute; top:10px; right: 10px"
+                        onclick="exe(event)"><i name="delete" class="fa fa-heart"></i></button>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+            {% else %}
+            No hay nada para mostrar :C
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<link href="{% static 'publications/css/custom_ckeditor.css' %}" rel="stylesheet">
+<script src="{% static 'publications/js/publication_list_wishlistHandler.js' %}"></script>
+
+{% endblock %}

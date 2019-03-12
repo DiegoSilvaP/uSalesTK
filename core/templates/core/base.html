@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    {% load static %}
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        type="text/css">
+    <link href="{% static 'core/css/booty.css' %}" rel="stylesheet">
+    <link href="{% static 'core/css/jquery.growl.css' %}" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{% static 'core/js/jquery.growl.js' %}"></script>
+    <!-- Javascript -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+    <body>
+        <!-- Navegación -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top border-bottom border-secondary">
+            <div class="container"> <a class="navbar-brand text-light" href="{% url 'publications:publications'%}">
+                    <img src="{% static 'core/img/logo.png' %}" height="25">
+                </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
+                    data-target="#navbar4" aria-expanded="true">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="wrap">
+                    <div class="search">
+                        <input type="text" class="searchTerm" placeholder="Estoy buscando...">
+                        <button type="submit" class="searchButton">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="navbar-collapse text-center collapse" id="navbar4">
+                    <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+
+                        <li class="nav-item "> <a href="#" class="btn btn-link disabled">
+
+                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">0</span></a>
+                        </li>
+                        <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
+                                <span class="fa fa-heart"></span><span id="wishlist_span" class="badge badge-danger badge-pill">{{wishlist|length}}</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="btn-group">
+                                <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{request.user.first_name}}</button>
+                                <div class="dropdown-menu">
+                                    {% if request.user.is_staff %}
+                                    <a class="dropdown-item" href="/admin">Admin</a>
+                                    <div class="dropdown-divider"></div>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item disabled" href="#">Compras</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item disabled" href="#">Ventas</a>
+                                    <div class="dropdown-divider"></div>
+                                    {% if request.user.is_staff %}
+                                    <a class="dropdown-item" href="{% url 'publications:create' %}">Publicar producto</a>
+                                    <div class="dropdown-divider"></div>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="btn btn-link">Acceder</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <!-- <a class="btn btn-secondary text-white">Ingresar</a> -->
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido -->
+        {% block content %}{% endblock %}
+        <!-- footer -->
+        <div class="bg-primary text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="p-4 col-md-6">
+                        <h2 class="mb-4">Mapsite</h2>
+                        <ul class="list-unstyled"> <a href="#" class="">Home</a> <br> <a href="#" class="">About us</a>
+                            <br> <a href="#" class="">Our services</a> <br> <a href="#" class="">Stories</a> </ul>
+                    </div>
+                    <div class="p-4 col-md-6">
+                        <h2 class="mb-4">Contact</h2>
+                        <p class=""> <a href="#" class="">
+                                <i class="fa d-inline mr-3 text-muted fa-phone"></i>+246 - 542 550 5462</a> </p>
+                        <p> <a href="#" class="">
+                                <i class="fa d-inline mr-3 text-muted fa-envelope-o"></i>info@brand.com</a> </p>
+                        <p> <a href="#" class="">
+                                <i class="fa d-inline mr-3 fa-map-marker text-muted"></i>365 Park Street, NY</a> </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <p class="text-center">© Copyright 2019 Brand - All rights reserved. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+
+</html>

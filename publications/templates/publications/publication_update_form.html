@@ -1,0 +1,116 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Editar {{product.name}}{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_ck-editor.html'%}
+{% include 'publications/includes/publication_bar.html'%}
+<main role="main">
+        <div class="col-md-2">
+    
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="container">
+            <div class="row py-2">
+                <div class="col-md-12 py-3">
+                    <h1 >Modifica {{publication.product}}</h1>
+                </div>
+                <div class="col-md-12">
+                    <div class="card bg-light">
+    
+                        <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8 border-primary border-right text-center">
+                                        <input type="text" name="user" id="user" value="{{request.user.id}}" style="display: none">
+                                        <img src="{{publication.picture.url}}" id="imgPreview" class="img-fluid d-block mx-auto"
+                                            style="height:425px">
+                                            <h4>Puedes cambiar la imagen</h4>
+                                        {{form.picture}}
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                <div class="col-md-12" style="display: none">
+                                                    {{ form.seller }}
+                                                </div>
+                                                <h4>¿Cambiarás el nombre?</h4>
+                                                {{form.product}}
+                                            </div>
+    
+                                        </div>
+                                        <hr>
+                                        <h4> Precio del producto </h4>
+                                        <div class="form-group row">
+                                            <div class="col-1">
+                                                <h4> $ </h4>
+                                            </div>
+                                            <div class="col-11">
+                                                {{form.price}} </div>
+                                        </div>
+                                        <hr>
+                                        <h4> Unidades disponibles </h4>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                {{form.stock}} </div>
+                                        </div>
+                                        <hr>
+                                        <h4> Categoría </h4>
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                {{form.category}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <hr class="">
+                                        <h4>Recuerda describir tu producto</h4>
+                                        {{form.description|safe}}
+                                    </div>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-primary w-100"> Guardar producto </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- <div class="col-md-2"></div> -->
+            </div>
+        </div>
+        <script>
+            var user_id = document.getElementById('user').value;
+            document.getElementById('id_seller').value = user_id;
+    
+            $("#id_picture").on("change", function() {
+                readURL(this);
+            });
+    
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+    
+                    reader.onload = function (e) {
+                        $('#imgPreview')
+                            .attr('src', e.target.result);
+                    };
+    
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+    </main>
+{% endblock %}

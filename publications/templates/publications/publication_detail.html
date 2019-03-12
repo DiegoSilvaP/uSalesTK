@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{publications.product}}{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_ck-editor.html'%}
+{% include 'publications/includes/publication_bar.html'%}
+<!-- <style>main{ background: linear-gradient(0deg, white 50%, #5cdb95 50%);}</style> -->
+<main role="main">
+    <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
+    <div class="container">
+        <div class="row py-4">
+            <!-- <div class="col-md-2"></div> -->
+            <div class="col-md-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8 border-primary border-right">
+                                <img src="{{publication.picture.url}}" class="img-fluid d-block mx-auto">
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h3 class="card-title"><b>{{publication.product}}</b></h3>
+                                    </div>
+                                </div>
+                                <p>
+                                    <small>Publicado el <b>{{publication.created|date:"d M, Y"}}</b></small> <br>
+                                    <small>Actualizado el <b>{{publication.updated|date:"d M, Y"}}</b></small>
+                                </p>
+                                <hr>
+                                <h2><b>${{publication.price}}</b></h4>
+                                    <p>Categoría: <b>{{publication.category}}</b></p>
+                                    <hr>
+                                    <a href="#" class="btn btn-secondary text-white w-100 disabled">Comprar ahora</a>
+                                    <div class="row">
+                                        <div class="col-6 py-2">
+
+                                            <a href="#" class="btn btn-outline-secondary w-100 disabled">Agregar al
+                                                carrito</a>
+
+                                        </div>
+                                        <div id="colBtns" class="col-6 py-2">
+                                            {% for deseado in wishlist %}
+                                            {% if deseado.publication_id == publication.id %}
+
+                                            <button id="btnEliminar" onclick="exe(event)" class="btn btn-secondary w-100">Eliminar
+                                                de deseos</button><input style="display:none" type="text" name="txtProducto"
+                                                id="txtProducto" value="{{deseado.publication_id}}">
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    {% if user.is_authenticated and user == publication.seller %}
+                                    <a href="{% url 'publications:update' publication.id %}" class="btn btn-info w-100">Editar
+                                        publicacion <i class="fa fa-pencil"></i></a>
+                                    {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="">
+                        {{publication.description|safe}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-2"></div> -->
+        </div>
+    </div>
+    <script>
+        var col = document.getElementById('colBtns');
+        if (col.childElementCount == 0) {
+            col.innerHTML =
+                '<input style="display:none" type="text" name="txtProducto" id="txtProducto" value="{{publication.id}}"><button id="btnAgregar" onclick="exe(event)" class="btn btn-secondary w-100">Agregar a deseos</button>'
+            // console.log(col.childNodes[0].id);
+        }
+    </script>
+    <script src="{% static 'publications/js/publication_detail_wishlistHandler.js' %}"></script>
+</main>
+{% endblock %}

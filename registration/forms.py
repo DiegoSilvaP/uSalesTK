@@ -1,0 +1,53 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Profile
+
+class UserCreationFormWithEmail(UserCreationForm):
+    email = forms.EmailField(required=True, help_text='Requerido, 254 caracteres como maximo y debe ser un correo válido')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+        
+
+# Metodo para limpiar o validar el email
+    def clean_email(self):
+        # Recuperamos el email que se ha enviado en el formulario
+        email = self.cleaned_data.get('email')
+        # comprobar si existen en la bd uno o mas emails con la misma direccion
+         # Filter a diferencia de get, devuelve un queryset o una lista vacia si no hay ningun elemento
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('El email ya está registrado, prueba con otro.')
+       
+        return email
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'addess']
+        widgets = {
+            'avatar': forms.ClearableFileInput(attrs={'class':'form-control-file mt-3'}),
+            # 'phone': forms.(attrs={'class':'form-control mt-3', 'rows':3, 'placeholder':'Biografia'}),
+            'addess': forms.TextInput(attrs={'class':'form-control mt-3', 'placeholder':'Dirección'}),
+        }
+
+class EmailForm(forms.ModelForm):
+    email = forms.EmailField(required=True, help_text='Requerido, 254 caracteres como maximo y debe ser un correo válido')
+
+    class Meta:
+        model = User
+        fields = ['email']
+
+    # Metodo para limpiar o validar el email
+    def clean_email(self):
+        # Recuperamos el email que se ha enviado en el formulario
+        email = self.cleaned_data.get('email')
+        # Comprobamos si se ha cambiado el campo email
+        if 'email' in self.changed_data:
+            # comprobar si existen en la bd uno o mas emails con la misma direccion
+            # Filter a diferencia de get, devuelve un queryset o una lista vacia si no hay ningun elemento
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError('El email ya está registrado, prueba con otro.')
+        return email

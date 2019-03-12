@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<style>.errorlist{color:red;} label{display:none}</style>
+<main role="main">
+
+  <div class="container">
+    <div class="row py-4">
+      <div class="col-md-3" id="errorList">
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+        {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="alert alert-error" style="display:none;">
+          <h4>Please fix the following errors</h4>
+          <ul>
+            {% for field in form %}
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% if form.non_field_errors %}
+          {{ form.non_field_errors }}
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <div class="card bg-secondary text-white">
+          <div class="card-body">
+            <h3 class="card-title"><b>Registro</b></h3>
+            <form action="" method="post">{% csrf_token %}
+
+              <div class="row">
+                <div class="col-md-12">
+                  <small class="form-text text-info">{{ form.username.help_text }}</small>
+                  {{ form.username }}
+                </div>
+                <div class="col-md-6">
+
+                  {{ form.first_name }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.last_name }}
+                </div>
+                <div class="col-md-12">
+                  <small class="form-text text-info">{{ form.email.help_text }}</small>
+                  {{ form.email }}
+                </div>
+                <div class="col-md-6">
+
+                  {{ form.password1 }}
+                </div>
+                <div class="col-md-6">
+                  {{ form.password2 }}
+                </div>
+                <small class="form-text text-info">{{ form.password1.help_text }}</small>
+              </div>
+              <p><input type="submit" class="btn btn-primary btn-block text-white" value="Continuar"></p>
+            </form>
+            ¿Ya tienes cuenta?
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-block">Iniciar sesión</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      console.log("ready!");
+    var ul = document.getElementById('errorList').lastElementChild.children[1];
+    for (i = 0; i < ul.childElementCount; i++) {
+      console.log(ul.children[i].textContent);
+    }
+
+
+    function showMessage() {
+      if (ul.childElementCount > 0) {
+        $.growl.error({
+          message: "The kitten is cute!"
+        });
+      }
+    }
+    });
+
+    
+  </script>
+</main>
+{% endblock %}
