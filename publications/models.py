@@ -39,9 +39,9 @@ class Publication(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Vendedor", default=1)
     product = models.TextField(verbose_name="Producto", max_length=200)
     description = RichTextField(verbose_name="Descripción")
-    stock = models.SmallIntegerField(verbose_name="Cantidad", default=10)
-    price = models.DecimalField(verbose_name="Precio por unidad", decimal_places=2, max_digits=8, default=1500.5)
-    category = models.ForeignKey(Category, verbose_name="Categoria", related_name="get_posts", on_delete=models.CASCADE, default="")
+    stock = models.PositiveSmallIntegerField(verbose_name="Cantidad", default=10)
+    price = models.DecimalField(verbose_name="Precio por unidad", decimal_places=1, max_digits=8, default=0)
+    category = models.ForeignKey(Category, verbose_name="Categoria", related_name="get_categories", on_delete=models.CASCADE, default="")
     picture = models.ImageField(verbose_name="Imagen del encabezado", upload_to='publications', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
@@ -50,6 +50,7 @@ class Publication(models.Model):
     class Meta:
         verbose_name = "Publicación"
         verbose_name_plural = "Publicaciones"
+        ordering = ['-created', 'product']
 
     def __str__(self):
         return self.product

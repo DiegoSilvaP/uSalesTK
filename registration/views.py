@@ -8,6 +8,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import ProfileForm, EmailForm
+from shopping_basket.models import Shopping_basketItem
+
+from wish_list.models import Wish_listItem
 
 # Create your views here.
 class SignUpView(CreateView):
@@ -27,9 +30,9 @@ class SignUpView(CreateView):
         form.fields['username'].widget = forms.TextInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Nombre de Usuario'})
         form.fields['first_name'].widget = forms.TextInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Nombre'})
         form.fields['last_name'].widget = forms.TextInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Apellido'})
-        form.fields['email'].widget = forms.EmailInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Direccion de correo'})
+        form.fields['email'].widget = forms.EmailInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Dirección de correo'})
         form.fields['password1'].widget =forms.PasswordInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Contraseña'})
-        form.fields['password2'].widget =forms.PasswordInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Repite la contraseña'})
+        form.fields['password2'].widget =forms.PasswordInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Confirma la contraseña'})
          
         return form
 
@@ -43,6 +46,13 @@ class ProfileUpdate(UpdateView):
     def get_object(self):
         profile, created = Profile.objects.get_or_create (user=self.request.user)
         return profile
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileUpdate, self).get_context_data(**kwargs)
+        if self.request.user.is_anonymous !=True:
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class EmailUpdate(UpdateView):
@@ -60,3 +70,10 @@ class EmailUpdate(UpdateView):
         # Modificacion en tiempo de ejecucion
         form.fields['email'].widget = forms.EmailInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Email'})
         return form
+
+    def get_context_data(self, **kwargs):
+        context = super(EmailUpdate, self).get_context_data(**kwargs)
+        if self.request.user.is_anonymous !=True:
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+        return context

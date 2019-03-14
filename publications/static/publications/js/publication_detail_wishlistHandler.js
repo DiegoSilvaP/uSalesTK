@@ -1,33 +1,17 @@
-var col = document.getElementById('colBtns');
-var user = document.getElementById('user').value;
-// if (col.childElementCount == 0) {
-//     col.innerHTML =
-//         '<input style="display:none" type="text" name="txtProducto" id="txtProducto" value="{{publication.id}}"><button id="btnAgregar" onclick="exe(event)" class="btn btn-secondary w-100">Agregar a deseos</button>'
-//     // console.log(col.childNodes[0].id);
-// }
+// JS que agrega un producto a lista de deseados desde la pagina del producto
 
-function exe(event) {
-    var action = event.target.id;
-    if (action == "btnAgregar") {
+function wishListAddHandler(event) {
         var publicacion = event.target.parentElement.childNodes[0].value;
         // console.log(user + ' va a agregar a favs el producto ' + publicacion);
         $.ajax({
             url: '/wish_lists/add/',
             data: {
                 'publication': publicacion,
-                'customer': user
             },
             dataType: 'json',
             success: function (data) {
                 if (data['result'] == 1) {
                     location.reload();
-
-                    $.growl.notice({
-                        title: '',
-                        message: "Agregado a favoritos ❤",
-                        location: "bc"
-                    });
-
                 }
             },
             error: function () {
@@ -38,28 +22,50 @@ function exe(event) {
                 });
             }
         });
-    } else {
+    }
+    function wishListDeleteHandler(event) {
         var publicacion = event.target.parentElement.childNodes[2].value;
-        // console.log(user + ' va a Eliminar a favs el producto ' + publicacion);
         $.ajax({
             url: '/wish_lists/delete/',
             data: {
                 'publication': publicacion,
-                'customer': user
             },
             dataType: 'json',
             success: function (data) {
                 if (data['result'] == 2) {
                     location.reload();
-
-                    $.growl.warning({
-                        title: '',
-                        message: "Eliminado de favoritos 💔",
-                        location: "bc"
-                    });
-
                 }
             }
         });
     }
+
+
+function basketListDeleteItemHandler(event){
+    var producto = event.target.parentElement.children[0].value;
+    $.ajax({
+        url: '/shopping_basket_lists/delete/',
+        data: {
+            
+            'producto': producto,
+        },
+        dataType: 'json',
+        success: function (data) {
+            location.reload();
+        }
+    });
+}
+
+function basketListAddItemHandler(event){
+    var producto = event.target.parentElement.children[0].value;
+    $.ajax({
+        url: '/shopping_basket_lists/add/',
+        data: {
+            'producto': producto,
+            'cantidad': 1
+        },
+        dataType: 'json',
+        success: function (data) {
+            location.reload();
+        }
+    });
 }

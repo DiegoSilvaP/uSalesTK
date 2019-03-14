@@ -1,7 +1,5 @@
 from django.urls import path
 from .views import Wish_listListView, Wish_listAdd, Wish_listDelete
-from . import views
-
 
 wish_list_patterns = ([
     path('', Wish_listListView.as_view(), name="wish_lists"),

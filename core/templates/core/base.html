@@ -37,29 +37,30 @@
                 </button>
                 <div class="wrap">
                     <div class="search">
-                        <input type="text" class="searchTerm" placeholder="Estoy buscando...">
-                        <button type="submit" class="searchButton">
-                            <i class="fa fa-search"></i>
-                        </button>
+                        
+                            <input type="text" class="searchTerm" name="inputSearch" id="inputSearch" placeholder="Estoy buscando...">
+                            <button type="submit" class="searchButton">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        
                     </div>
                 </div>
                 <div class="navbar-collapse text-center collapse" id="navbar4">
+                    
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
-
-                        <li class="nav-item "> <a href="#" class="btn btn-link disabled">
-
-                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">0</span></a>
+                        <li class="nav-item "> <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
+                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">{{basket_list|length}}</span></a>
                         </li>
                         <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
-                                <span class="fa fa-heart"></span><span id="wishlist_span" class="badge badge-danger badge-pill">{{wishlist|length}}</span></a>
+                                <span class="fa fa-heart"></span><span id="wishlist_span" class="badge badge-danger badge-pill">{{wish_list|length}}</span></a>
                         </li>
                         <li class="nav-item">
                             <div class="btn-group">
                                 <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{request.user.first_name}}</button>
                                 <div class="dropdown-menu">
                                     {% if request.user.is_staff %}
-                                    <a class="dropdown-item" href="/admin">Admin</a>
+                                    <a class="dropdown-item" href="/admin">Administrar</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}
                                     <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
@@ -88,18 +89,19 @@
         </nav>
 
         <!-- Contenido -->
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
         <!-- footer -->
         <div class="bg-primary text-white">
             <div class="container">
                 <div class="row">
                     <div class="p-4 col-md-6">
-                        <h2 class="mb-4">Mapsite</h2>
-                        <ul class="list-unstyled"> <a href="#" class="">Home</a> <br> <a href="#" class="">About us</a>
-                            <br> <a href="#" class="">Our services</a> <br> <a href="#" class="">Stories</a> </ul>
+                        <h2 class="mb-4">Mapa del sitio</h2>
+                        <ul class="list-unstyled"> <a href="#" class="">Inicio</a> <br> <a href="#" class="">Sobre nosotros</a>
+                           </ul>
                     </div>
                     <div class="p-4 col-md-6">
-                        <h2 class="mb-4">Contact</h2>
+                        <h2 class="mb-4">Contacto</h2>
                         <p class=""> <a href="#" class="">
                                 <i class="fa d-inline mr-3 text-muted fa-phone"></i>+246 - 542 550 5462</a> </p>
                         <p> <a href="#" class="">
@@ -110,7 +112,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 mt-3">
-                        <p class="text-center">© Copyright 2019 Brand - All rights reserved. </p>
+                        <p class="text-center">© Copyright 2019 uSales - Todos los derechos reservados. </p>
                     </div>
                 </div>
             </div>

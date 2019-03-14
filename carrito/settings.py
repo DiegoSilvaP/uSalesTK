@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'ckeditor',
     'core',
     'publications.apps.PublicationsConfig',
-    'wish_list',
+    'shopping_basket.apps.ShoppingBasketConfig',
+    'wish_list.apps.Wish_listConfig',
 ]
 
 MIDDLEWARE = [
@@ -114,7 +116,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -126,9 +128,9 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         'width': 'width: 100% !important',
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
+            ['Bold', 'Italic', 'Underline', 'Font', 'Format'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink']
+            ['Link', 'Unlink'],
         ]
     }
 }
@@ -158,4 +160,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Custom header
-ADMIN_SITE_HEADER = "You Sales"
+ADMIN_SITE_HEADER = "uSalesTK"

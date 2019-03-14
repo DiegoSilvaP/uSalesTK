@@ -34,7 +34,7 @@
                 {% endif %}
             </div>
             <div class="col-md-6">
-                <div class="card bg-secondary text-white">
+                <div class="card bg-primary text-white">
                     <div class="card-body">
                         <h3 class="card-title"><b>Iniciar sesión</b></h3>
                         
@@ -54,11 +54,11 @@
                                     <input type="password" name="password" required
                                       id="id_password" class="form-control" placeholder="Contraseña"/>
                                   </p>
-                                  <p><input type="submit" class="btn btn-primary btn-block text-white" value="Acceder"></p>
+                                  <p><input type="submit" class="btn btn-secondary btn-block text-white" value="Acceder"></p>
                                 </form>
-                                ¿Ha olvidado su contraseña? Haga clic <a class="link" href="{% url 'password_reset' %}">aquí</a> para restablecerla. <br>o si aún no estás registrado
+                                <p><a class="link" href="{% url 'password_reset' %}">Olvidé mi contraseña</a>.</p>
                               
-                        <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-block" >Crear cuenta</a>
+                        <a href="{% url 'signup' %}" class="btn btn-outline-secondary btn-block" >Crear cuenta</a>
                     </div>
                 </div>
             </div>

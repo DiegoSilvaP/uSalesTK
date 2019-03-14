@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from .models import Publication, Category
 from .forms import PublicationForm
@@ -21,41 +21,49 @@ from django.utils.decorators import method_decorator
 
 from django.views.generic import TemplateView
 
+from shopping_basket.models import Shopping_basketItem
+
 
 # Create your views here.
 # class PublicationListView(ListView):
+
+class PublicationListSearchView(ListView):
+    model = Publication
 
 class PublicationListView(ListView):
     model = Publication
 
     def get_context_data(self, **kwargs):
         context = super(PublicationListView, self).get_context_data(**kwargs)
+        context['category'] = Category.objects.all()
         if self.request.user.is_anonymous !=True:
-            context['wishlist'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
-            context['category'] = Category.objects.all()
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
+        
 
 
 class PublicationDetailView(DetailView):
     model = Publication
-
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
+        
         context = super(PublicationDetailView, self).get_context_data(**kwargs)
+        print(self.request)
         if self.request.user.is_anonymous !=True:
-           context['wishlist'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           
+           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
 @method_decorator(staff_member_required, name='dispatch')
 class PublicationCreate(CreateView):
     model = Publication
-    # Que campos puede editar el usuario
-    # Seran renderizados desde el formulario extendido
-    # fields = ['title', 'content', 'order']
     form_class = PublicationForm
     def get_context_data(self, **kwargs):
         context = super(PublicationCreate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-           context['wishlist'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
     # Sobreescribimos el metodo get_success_url para que nos redirija automaticamente a la publicacion creada por medio del ID y del SLUG
@@ -73,8 +81,22 @@ class PublicationUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PublicationUpdate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-           context['wishlist'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
     def get_success_url(self):
         return reverse_lazy('publications:publication', args=[self.object.id, slugify(self.object.product)])
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class PublicationDelete(DeleteView):
+    model = Publication
+    success_url = reverse_lazy('publications:publications')
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationDelete, self).get_context_data(**kwargs)
+        if self.request.user.is_anonymous !=True:
+           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+        return context

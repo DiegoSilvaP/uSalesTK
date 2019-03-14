@@ -3,6 +3,7 @@
 {% block title %}You sales{% endblock %}
 {% block content %}
 {% include 'publications/includes/publication_bar.html'%}
+{% load humanize %}
 <style></style>
 
 <div class="container-fluid">
@@ -47,11 +48,12 @@
         </div>
     </div>
 </div>
-<div class="py-4 text-center">
+<div class="py-3 text-center">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="display-5">Encuentra los mejores precios en <img src="{% static 'core/img/USALESTK.png' %}" height="50"></h1>
+                <h1 class="display-5">Encuentra los mejores precios en <img src="{% static 'core/img/USALESTK.png' %}"
+                        height="50"></h1>
             </div>
         </div>
     </div>
@@ -59,7 +61,7 @@
 
 
 
-<div class="text-center py-4">
+<div class="text-center">
     <div class="container">
         <div class="row">
             <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
@@ -73,22 +75,28 @@
                             <img class="img-fluid d-block mx-auto" style="height:170px" src="{{publication.picture.url}}">
                         </a>
                     </div>
-                    <div class="card-body">
-                        <h4 class="card-title"><b>${{publication.price}}</b></h4>
+                    <div name="bodyCardBasket" class="card-body">
+                        <h4 class="card-title"><b>${{publication.price|intcomma }}</b></h4>
                         <p class="card-text">{{publication.product}}</p>
                         <hr>
+                        {% if basket_list %}
+                        {% for basketItem in basket_list %}
+                        {% if basketItem.publication_id == publication.id %}
+                        <button onclick="basketListDeleteHandler(event)" class="btn btn-primary mx-block"><i class="fa fa-shopping-cart"></i> <i class="fa fa-times"></i></button>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
 
-                        <button class="btn btn-primary mx-block disabled"><i class="fa fa-shopping-cart"></i></button>
                     </div>
 
                     <input type="text" name="publication" id="publication" value="{{publication.id}}" style="display:none">
-                    {% if wishlist %}
+                    {% if wish_list %}
                     <!-- loop to check all the items in the wishlist-->
-                    {% for deseo in wishlist %}
+                    {% for deseo in wish_list %}
                     <!-- if publication_id equals to publication.id, it means the publication is in wishlist, so render - button to delete it -->
                     {% if deseo.publication_id == publication.id %}
                     <button name="delete" class="btn btn-secondary mx-block" style="position:absolute; top:10px; right: 10px"
-                        onclick="exe(event)"><i name="delete" class="fa fa-heart"></i></button>
+                        onclick="wishListDeleteHandler(event)"><i name="delete" class="fa fa-heart"></i></button>
                     {% endif %}
                     {% endfor %}
 
@@ -105,6 +113,15 @@
 </div>
 
 <link href="{% static 'publications/css/custom_ckeditor.css' %}" rel="stylesheet">
+<script>
+var cards = document.getElementsByName('bodyCardBasket');
+for (let i = 0; i < cards.length; i++) {
+        if(cards[i].childElementCount == 3){
+            cards[i].innerHTML+='<button onclick="basketListAddHandler(event)" class="btn btn-outline-primary mx-block"><i class="fa fa-shopping-cart"></i> <i class="fa fa-plus"></i></button>'
+        }
+    }
+</script>
+<!-- <script src="{% static 'publications/js/publication_detail_wishlistHandler.js' %}"></script> -->
 <script src="{% static 'publications/js/publication_list_wishlistHandler.js' %}"></script>
 
 {% endblock %}

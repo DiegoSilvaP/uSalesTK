@@ -34,7 +34,7 @@
         {% endif %}
       </div>
       <div class="col-md-6">
-        <div class="card bg-secondary text-white">
+        <div class="card bg-primary text-white">
           <div class="card-body">
             <h3 class="card-title"><b>Registro</b></h3>
             <form action="" method="post">{% csrf_token %}
@@ -64,10 +64,10 @@
                 </div>
                 <small class="form-text text-info">{{ form.password1.help_text }}</small>
               </div>
-              <p><input type="submit" class="btn btn-primary btn-block text-white" value="Continuar"></p>
+              <p><input type="submit" class="btn btn-secondary btn-block text-white" value="Registrarse"></p>
             </form>
-            ¿Ya tienes cuenta?
-            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-block">Iniciar sesión</a>
+            <p>¿Ya tienes cuenta?</p>
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-block">Iniciar sesión</a>
           </div>
         </div>
       </div>

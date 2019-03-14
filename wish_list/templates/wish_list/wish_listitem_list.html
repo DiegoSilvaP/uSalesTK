@@ -2,19 +2,18 @@
 {% load static %}
 {% block title %}You sales{% endblock %}
 {% block content %}
+{% load humanize %}
 <!-- {% include 'publications/includes/publication_bar.html'%} -->
-
-
 
 <main role="main">
     <div class="container">
         <h3 class="display-3">Lista de deseos</h3>
         <div class="row py-4">
             <div class="col 12">
-                {% if object_list %}
-                {% for deseado in object_list %}
+                {% if wish_list %}
+                {% for deseado in wish_list %}
                 {% for producto in publications %}
-                {% if  deseado.customer_id == request.user.id and producto.id == deseado.publication_id %}
+                {% if deseado.customer_id == request.user.id and producto.id == deseado.publication_id %}
 
                 <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
                 <div class="card my-2">
@@ -27,9 +26,9 @@
                                 <div class="row">
                                     <div class="col-md-9">
                                         <a href="{% url 'publications:publication' producto.id producto.product|slugify %}">
-                                            <h3 >{{producto.product}}</h3>
+                                            <h3>{{producto.product}}</h3>
                                         </a>
-                                        <h1>${{producto.price}}</h1>
+                                        <h1>${{producto.price|intcomma}}</h1>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="row">
@@ -51,9 +50,11 @@
                 </div>
                 {% endif %}
                 {% endfor %}
+                
                 {% endfor%}
+                
                 {% else %}
-                No hay items en deseados :card
+                No hay items en deseados :c
                 {% endif %}
 
             </div>
