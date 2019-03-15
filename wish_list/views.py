@@ -5,6 +5,7 @@ from publications.models import Publication
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.views.generic import View
+from shopping_basket.models import Shopping_basketItem
 
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -22,6 +23,7 @@ class Wish_listListView(ListView):
         context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
         if self.request.user.is_anonymous !=True:
             context['publications'] = Publication.objects.all().values_list("product").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
 

@@ -46,11 +46,13 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <h3>$<b>{{basketItem.price|intcomma}}</b></h3>
+                                            <div class="col-md-12 text-right">
+                                                <h3 >$<b >{{basketItem.price|intcomma}}</b></h3>
+                                                <p style="display:none" name="txtPrecioItem">{{basketItem.price}}</p>
                                             </div>
                                             <div class="col-md-12 py-1">
-                                                <a onclick="deleteItem(event)" class="btn btn-outline-secondary w-100" href="#">Quitar del carrito</a>
+                                                <a onclick="deleteItem(event)" class="btn btn-outline-secondary w-100"
+                                                    href="#">Quitar del carrito</a>
                                             </div>
                                             <div class="col-md-12 py-1">
                                                 <a class="btn btn-primary w-100" href="#">Comprar ahora</a>
@@ -71,67 +73,35 @@
                 <div class="card my-4">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-10">
-                                <h2>total</h2>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h3>$9999</h3>
-                                    </div>
-                                    <div class="col-md-12 py-1">
-                                        <a class="btn btn-primary w-100" href="#">Comprar todo</a>
-                                    </div>
-
-                                </div>
+                            <div class="col-md-3">
 
                             </div>
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <h4 id="txtTotalProductos">Productos ()</h4>
+                                <h4>Envio a ...</h4>
+                                <h4><b>Total</b></h4>
+                                
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <h4 id="txtcompraSubTotal">$54854</h4>
+                                <h4 class="text-success">Gratis</h4>
+                                <h3><b id="txtcompraTotal">$54854</b></h3>
+                                <hr>
+                                <button class="btn btn-secondary w-100 disabled">Comprar todo</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 {% else %}
                 No hay items en el carrito :c
                 {% endif %}
-
             </div>
         </div>
     </div>
 </main>
-
-
-<script>
-    function contador(event) {
-        var cantidad = event.target.value;
-        var producto = event.target.parentElement.children[1].value;
-        console.log(producto);
-        $.ajax({
-            url: '/shopping_basket_lists/update/',
-            data: {
-                
-                'producto': producto,
-                'cantidad': cantidad
-            },
-            dataType: 'json',
-            success: function (data) {
-                location.reload();
-            }
-        });
-    }
-
-    function deleteItem(event){
-        var producto = event.target.parentElement.parentElement.parentElement.parentElement.children[1].children[0].children[2].children[0].value;
-        $.ajax({
-            url: '/shopping_basket_lists/delete/',
-            data: {
-                
-                'producto': producto,
-                
-            },
-            dataType: 'json',
-            success: function (data) {
-                location.reload();
-            }
-        });
-    }
-</script>
+<script src="{% static 'shopping_basket/js/totalBasketHandler.js' %}"></script>
 {% endblock %}

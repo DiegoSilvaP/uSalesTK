@@ -46,6 +46,7 @@ class Shopping_basketListView(ListView):
         context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
         if self.request.user.is_anonymous !=True:
             context['publications'] = Publication.objects.all().values_list("product").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
 class Shopping_basketItemDelete(View):
