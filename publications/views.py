@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from .models import Publication, Category
+from .filters import ProductFilter, CategoryFilter
 from .forms import PublicationForm
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
@@ -28,7 +29,8 @@ from shopping_basket.models import Shopping_basketItem
 # class PublicationListView(ListView):
 
 class PublicationListSearchView(ListView):
-    model = Publication
+    filterset_class=ProductFilter
+    # template_name='publications/publication_list.html'
 
 class PublicationListView(ListView):
     model = Publication
@@ -36,6 +38,8 @@ class PublicationListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PublicationListView, self).get_context_data(**kwargs)
         context['category'] = Category.objects.all()
+        context['filter'] = ProductFilter(self.request.GET, queryset=self.get_queryset())
+        # context['filterCategory'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
         if self.request.user.is_anonymous !=True:
             context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
             context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()

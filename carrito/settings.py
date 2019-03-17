@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'publications.apps.PublicationsConfig',
     'shopping_basket.apps.ShoppingBasketConfig',
     'wish_list.apps.Wish_listConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

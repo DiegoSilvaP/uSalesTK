@@ -4,8 +4,7 @@
 {% block content %}
 {% include 'publications/includes/publication_bar.html'%}
 {% load humanize %}
-<style></style>
-
+{% if filter.qs|length == object_list|length %}
 <div class="container-fluid">
     <div class="row">
         <div class="text-center mx-auto">
@@ -59,14 +58,17 @@
     </div>
 </div>
 
-
-
-<div class="text-center">
+{% else %}
+<div class="container">
+    <h3 class="display-3">Resultados para <b>{{request.GET.product}}</b> ({{filter.qs|length}})</h3>
+</div>
+{% endif %}
+<div class="">
     <div class="container">
-        <div class="row">
+        <div class="row text-center">
             <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
-            {% if object_list %}
-            {% for publication in object_list %}
+            {% if filter.qs %}
+            {% for publication in filter.qs %}
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 py-3">
                 <div class="card card-zoom bg-light">
                     <div class="bg-white">
@@ -82,7 +84,8 @@
                         {% if basket_list %}
                         {% for basketItem in basket_list %}
                         {% if basketItem.publication_id == publication.id %}
-                        <button onclick="basketListDeleteHandler(event)" class="btn btn-primary mx-block"><i class="fa fa-shopping-cart"></i> <i class="fa fa-times"></i></button>
+                        <button onclick="basketListDeleteHandler(event)" class="btn btn-primary mx-block"><i class="fa fa-shopping-cart"></i>
+                        </button>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -112,12 +115,14 @@
     </div>
 </div>
 
+
 <link href="{% static 'publications/css/custom_ckeditor.css' %}" rel="stylesheet">
 <script>
-var cards = document.getElementsByName('bodyCardBasket');
-for (let i = 0; i < cards.length; i++) {
-        if(cards[i].childElementCount == 3){
-            cards[i].innerHTML+='<button onclick="basketListAddHandler(event)" class="btn btn-outline-primary mx-block"><i class="fa fa-shopping-cart"></i> <i class="fa fa-plus"></i></button>'
+    var cards = document.getElementsByName('bodyCardBasket');
+    for (let i = 0; i < cards.length; i++) {
+        if (cards[i].childElementCount == 3) {
+            cards[i].innerHTML +=
+                '<button onclick="basketListAddHandler(event)" class="btn btn-outline-primary mx-block"><i class="fa fa-shopping-cart"></i></button>'
         }
     }
 </script>
