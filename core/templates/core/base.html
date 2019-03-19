@@ -38,7 +38,7 @@
                 <div class="wrap">
                         
                     <div class="search">
-                        <form action="" method="get">
+                        <form action="{% url 'publications:search' %}" method="get">
                             <input type="text" class="searchTerm" name="product" id="id_product" placeholder="Estoy buscando...">
                             <button type="submit" class="searchButton">
                                 <i class="fa fa-search"></i>
@@ -51,7 +51,7 @@
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
                         <li class="nav-item "> <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
-                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">{{basket_list|length}}</span></a>
+                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">{{basket_quantity}}</span></a>
                         </li>
                         <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
                                 <span class="fa fa-heart"></span><span id="wishlist_span" class="badge badge-danger badge-pill">{{wish_list|length}}</span></a>

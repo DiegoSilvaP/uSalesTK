@@ -24,6 +24,10 @@ class Wish_listListView(ListView):
         if self.request.user.is_anonymous !=True:
             context['publications'] = Publication.objects.all().values_list("product").values()
             context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
 
 

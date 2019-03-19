@@ -29,12 +29,23 @@ from shopping_basket.models import Shopping_basketItem
 # class PublicationListView(ListView):
 
 class PublicationListSearchView(ListView):
-    filterset_class=ProductFilter
-    # template_name='publications/publication_list.html'
+    model = Publication
+    def get_context_data(self, **kwargs):
+        context = super(PublicationListSearchView, self).get_context_data(**kwargs)
+        context['category'] = Category.objects.all()
+        context['filter'] = ProductFilter(self.request.GET, queryset=self.get_queryset())
+        # context['filterCategory'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
+        if self.request.user.is_anonymous !=True:
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
+        return context
 
 class PublicationListView(ListView):
     model = Publication
-
     def get_context_data(self, **kwargs):
         context = super(PublicationListView, self).get_context_data(**kwargs)
         context['category'] = Category.objects.all()
@@ -43,10 +54,12 @@ class PublicationListView(ListView):
         if self.request.user.is_anonymous !=True:
             context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
             context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
         
-
-
 class PublicationDetailView(DetailView):
     model = Publication
     def get_context_data(self, *args, **kwargs):
@@ -54,9 +67,12 @@ class PublicationDetailView(DetailView):
         context = super(PublicationDetailView, self).get_context_data(**kwargs)
         print(self.request)
         if self.request.user.is_anonymous !=True:
-           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-           
-           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -66,8 +82,12 @@ class PublicationCreate(CreateView):
     def get_context_data(self, **kwargs):
         context = super(PublicationCreate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
 
     # Sobreescribimos el metodo get_success_url para que nos redirija automaticamente a la publicacion creada por medio del ID y del SLUG
@@ -85,8 +105,12 @@ class PublicationUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PublicationUpdate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
 
     def get_success_url(self):
@@ -101,6 +125,10 @@ class PublicationDelete(DeleteView):
     def get_context_data(self, **kwargs):
         context = super(PublicationDelete, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-           context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-           context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
+            qty=0
+            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
+                qty += q['quantity']
+            context['basket_quantity'] = qty
         return context
