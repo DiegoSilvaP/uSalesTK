@@ -38,7 +38,9 @@
                                         <img src="{{publication.picture.url}}" id="imgPreview" class="img-fluid d-block mx-auto"
                                             style="height:425px">
                                             <h4>Puedes cambiar la imagen</h4>
-                                        {{form.picture}}
+                                            <input type="file" name="picture" accept="image/*" id="id_picture"
+                                            style="display:none">
+                                        <label tabindex="0" for="id_picture" class="btn btn-secondary w-100">Selecciona una imagen</label>
                                     </div>
                                     <div class="col-md-4 text-center">
                                         <div class="row">

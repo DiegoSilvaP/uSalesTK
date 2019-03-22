@@ -34,11 +34,18 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8 border-primary border-right text-center">
-                                    <input type="text" name="user" id="user" value="{{request.user.id}}" style="display: none">
-                                    <img src="{% static 'publications/img/no-product.png' %}" id="imgPreview" class="img-fluid d-block mx-auto"
-                                        style="height:425px">
-                                        <h4>Carga una imagen distintiva</h4>
-                                    {{form.picture}}
+                                    <input type="text" name="user" id="user" value="{{request.user.id}}"
+                                        style="display: none">
+                                    <img src="{% static 'publications/img/no-product.png' %}" id="imgPreview"
+                                        class="img-fluid d-block mx-auto" style="height:425px">
+                                    <h4>Carga una imagen distintiva</h4>
+
+
+                                    <input type="file" name="picture" accept="image/*" id="id_picture"
+                                        style="display:none">
+                                    <label tabindex="0" for="id_picture" class="btn btn-secondary w-100">Selecciona una imagen</label>
+
+
                                 </div>
                                 <div class="col-md-4 text-center">
                                     <div class="row">
