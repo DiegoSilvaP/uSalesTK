@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
+    {% load custom_tags %}
+    {% categories as categories %}
+    {% aboutus as aboutus %}
+    {% privacy as privacy %}
+    {% faq as FAQ %}
 
     <!-- Estilos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -16,10 +21,12 @@
     <script src="{% static 'core/js/jquery.growl.js' %}"></script>
     <!-- Javascript -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
 
 
 </head>
@@ -36,10 +43,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="wrap">
-                        
+
                     <div class="search">
                         <form action="{% url 'publications:search' %}" method="get">
-                            <input type="text" class="searchTerm" name="product" id="id_product" placeholder="Estoy buscando...">
+                            <input type="text" class="searchTerm" name="product" id="id_product" required
+                                placeholder="Estoy buscando...">
                             <button type="submit" class="searchButton">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -47,21 +55,25 @@
                     </div>
                 </div>
                 <div class="navbar-collapse text-center collapse" id="navbar4">
-                    
+
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
-                        <li class="nav-item "> <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
-                                <span class="fa fa-shopping-cart"></span><span class="badge badge-danger badge-pill">{{basket_quantity}}</span></a>
+                        <li class="nav-item"> 
+                            <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
+                                <span class="fa fa-shopping-cart"></span><span
+                                    class="badge badge-danger badge-pill">{{ usuario|basketlist_counter:request.user.id }}</span></a>
                         </li>
                         <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
-                                <span class="fa fa-heart"></span><span id="wishlist_span" class="badge badge-danger badge-pill">{{wish_list|length}}</span></a>
+                                <span class="fa fa-heart"></span><span id="wishlist_span"
+                                    class="badge badge-danger badge-pill">{{ usuario|wishlist_counter:request.user.id }}</span></a>
                         </li>
                         <li class="nav-item">
                             <div class="btn-group">
-                                <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{request.user.first_name}}</button>
+                                <button class="btn btn-link dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">{{request.user.first_name|truncatechars:9}}</button>
                                 <div class="dropdown-menu">
                                     {% if request.user.is_staff %}
-                                    <a class="dropdown-item" href="/admin">Administrar</a>
+                                    <a class="dropdown-item" href="/admin">Administrador</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}
                                     <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
@@ -71,7 +83,8 @@
                                     <a class="dropdown-item disabled" href="#">Ventas</a>
                                     <div class="dropdown-divider"></div>
                                     {% if request.user.is_staff %}
-                                    <a class="dropdown-item" href="{% url 'publications:create' %}">Publicar producto</a>
+                                    <a class="dropdown-item" href="{% url 'publications:create' %}">Publicar
+                                        producto</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}
                                     <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
@@ -98,8 +111,31 @@
                 <div class="row">
                     <div class="p-4 col-md-6">
                         <h2 class="mb-4">Mapa del sitio</h2>
-                        <ul class="list-unstyled"> <a href="#" class="">Inicio</a> <br> <a href="#" class="">Sobre nosotros</a>
-                           </ul>
+                        <ul class="list-unstyled">
+                            
+                                {% if aboutus %}
+                                <a class="nav-link"
+                                    href="{% url 'about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
+                                {% else %}
+                                <a class="nav-link disabled" href="#">Acerca de</a>
+                                {% endif %}
+                            
+                            
+                                {% if FAQ|length > 0 %}
+                                <a class="nav-link" href="{% url 'FAQ' %}">Preguntas frecuentes</a>
+                                {% else %}
+                                <a class="nav-link disabled" href="#">Preguntas frecuentes</a>
+                                {% endif %}
+                            
+                            
+                                {% if privacy %}
+                                <a class="nav-link"
+                                    href="{% url 'privacy' privacy.id privacy.title|slugify %}">{{privacy}}</a>
+                                {% else %}
+                                <a class="nav-link disabled" href="#">Políticas de privacidad</a>
+                                {% endif %}
+                            
+                        </ul>
                     </div>
                     <div class="p-4 col-md-6">
                         <h2 class="mb-4">Contacto</h2>

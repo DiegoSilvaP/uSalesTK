@@ -22,13 +22,16 @@ from publications.urls import publications_patterns
 from wish_list.urls import wish_list_patterns
 from shopping_basket.urls import shopping_basket_patterns
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', include('core.urls')),
     path('', include(publications_patterns)),
     path('wish_lists/', include(wish_list_patterns)),
     path('shopping_basket_lists/', include(shopping_basket_patterns)),
-
+    path('information/', include('information.urls')),
+    path('privacy/', include('privacyPolicy.urls')),
+    path('FAQ/', include('faq.urls')),
 
     # Paths de Auth
     path('accounts/', include('django.contrib.auth.urls')),

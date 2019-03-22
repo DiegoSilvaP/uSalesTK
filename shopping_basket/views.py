@@ -1,11 +1,12 @@
-from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic import View
 from .models import Shopping_basketItem
-from wish_list.models import Wish_listItem
 from publications.models import Publication
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from information.models import AboutUs
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class Shopping_basketItemAdd(View):
@@ -38,19 +39,15 @@ class Shopping_basketItemUpdate(View):
 
 
 # Create your views here.
+@method_decorator(login_required, name='dispatch')
 class Shopping_basketListView(ListView):
     model = Shopping_basketItem
-
     def get_context_data(self, **kwargs):
         context = super(Shopping_basketListView, self).get_context_data(**kwargs)
-        context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+        context['aboutus'] = AboutUs.objects.first()
         if self.request.user.is_anonymous !=True:
-            context['publications'] = Publication.objects.all().values_list("product").values()
-            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            qty=0
-            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
-                qty += q['quantity']
-            context['basket_quantity'] = qty
+            context['publications'] = Publication.objects.all()
+            # context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
         return context
 
 class Shopping_basketItemDelete(View):
@@ -58,7 +55,6 @@ class Shopping_basketItemDelete(View):
         _publication = Publication.objects.get(id=request.GET['producto'])
         _customer = self.request.user.id
         Shopping_basketItem.objects.filter(customer = _customer,publication=_publication).delete()
-        
         data = {
             'result':1
         }

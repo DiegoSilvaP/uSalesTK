@@ -14,3 +14,6 @@ class Wish_listItem(models.Model):
     class Meta:
         verbose_name = "Lista de deseos"
         verbose_name_plural = "Listas de deseos"
+
+    def __str__(self):
+        return self.publication.product

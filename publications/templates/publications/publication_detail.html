@@ -5,6 +5,9 @@
 {% include 'publications/includes/publication_ck-editor.html'%}
 {% include 'publications/includes/publication_bar.html'%}
 {% load humanize %}
+{% load custom_tags %}
+{% wish_list as wish_list %}
+{% basket_list as basket_list %}
 <!-- <style>main{ background: linear-gradient(0deg, white 50%, #5cdb95 50%);}</style> -->
 <main role="main">
     <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">

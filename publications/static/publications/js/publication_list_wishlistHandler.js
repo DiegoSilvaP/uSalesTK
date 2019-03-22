@@ -1,4 +1,21 @@
 // JS que agrega un producto a la lista de deseados desde la pagina que lista todos los productos
+try {
+    document.getElementsByClassName('carousel-item')[0].classList.add("active");
+  }
+  catch(error) {
+    
+  }
+  
+
+  var cards = document.getElementsByName('bodyCardBasket');
+  for (let i = 0; i < cards.length; i++) {
+    if (cards[i].childElementCount == 3) {
+      cards[i].innerHTML +=
+        '<button onclick="basketListAddHandler(event)" class="btn btn-outline-primary mx-block"><i class="fa fa-shopping-cart"></i></button>'
+    }
+  }
+
+
 var cards = document.getElementsByClassName('card card-zoom bg-light');
     for (let i = 0; i < cards.length; i++) {
         if (cards[i].childElementCount == 3) {
@@ -63,12 +80,12 @@ function wishListDeleteHandler(event) {
 
 function basketListAddHandler(event) {
     var producto;
+    
     if (event.target.tagName == 'I') {
         producto = event.target.parentElement.parentElement.parentElement.children[2].value
     } else {
         producto = event.target.parentElement.parentElement.children[2].value;
     }
-
     $.ajax({
         url: '/shopping_basket_lists/add/',
         data: {

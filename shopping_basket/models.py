@@ -17,3 +17,5 @@ class Shopping_basketItem(models.Model):
         verbose_name = "Carrito de compras"
         verbose_name_plural = "Carritos de compras"
     
+    def __str__(self):
+        return self.publication.product

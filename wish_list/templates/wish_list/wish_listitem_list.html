@@ -3,29 +3,32 @@
 {% block title %}You sales{% endblock %}
 {% block content %}
 {% load humanize %}
-<!-- {% include 'publications/includes/publication_bar.html'%} -->
+{% include 'publications/includes/publication_bar.html'%}
+{% load custom_tags %}
+{% basket_list as basket_list %}
 
 <main role="main">
     <div class="container">
         <h4 class="display-4">Lista de deseos</h4>
         <div class="row py-4">
             <div class="col 12">
-                {% if wish_list %}
-                {% for deseado in wish_list %}
+                {% if object_list %}
+                {% for deseado in object_list %}
                 {% for producto in publications %}
                 {% if deseado.customer_id == request.user.id and producto.id == deseado.publication_id %}
-
                 <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
                 <div class="card my-2">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <a href="{% url 'publications:publication' producto.id producto.product|slugify %}">
-                                    <img class="img-fluid d-block mx-auto" src="/media/{{producto.picture}}" style="height:150px"></a></div>
+                                    <img class="img-fluid d-block mx-auto" src="{{producto.picture.url}}"
+                                        style="height:150px"></a></div>
                             <div class="col-md-9">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <a href="{% url 'publications:publication' producto.id producto.product|slugify %}">
+                                        <a
+                                            href="{% url 'publications:publication' producto.id producto.product|slugify %}">
                                             <h3>{{producto.product}}</h3>
                                         </a>
                                         <h1>${{producto.price|intcomma}}</h1>
@@ -33,13 +36,25 @@
                                     <div class="col-md-3">
                                         <div class="row">
                                             <div class="col-md-12 py-1 text-right">
-                                                <input type="text" name="publication" id="publication" value="{{producto.id}}"
-                                                    style="display:none">
-                                                <button onclick="exe(event)" class="btn btn-outline-danger w-100" href="#">Eliminar
+                                                <input type="text" name="publication" id="publication"
+                                                    value="{{producto.id}}" style="display:none">
+                                                <button onclick="deleteWishlistItemHandler(event)"
+                                                    class="btn btn-outline-danger w-100">Eliminar
                                                     de deseados</button>
                                             </div>
-                                            <div class="col-md-12 py-1 text-right">
-                                                <a class="btn btn-secondary w-100 disabled" href="#">Agregar al carrito</a>
+                                            <div name='CardBasketList' class="col-md-12 py-1 text-right">
+                                                <input type="text" name="publication" id="publication"
+                                                    value="{{producto.id}}" style="display: none">
+                                                {% for basketItem in basket_list %}
+                                                {% if basketItem.publication_id == producto.id %}
+
+                                                <button onclick="basketListDeleteHandler(event)"
+                                                    class="btn btn-secondary w-100">Eliminar
+                                                    del carrito</button><input style="display:none" type="text"
+                                                    name="txtProducto" id="txtProducto"
+                                                    value="{{basketItem.publication_id}}">
+                                                {% endif %}
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
@@ -50,16 +65,32 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                
+
                 {% endfor%}
-                
+
                 {% else %}
-                No hay items en deseados :c
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="">No has agregado nada a favoritos</h1>
+                        <hr>
+                        <h2 class="">¡Guarda un producto para ver más tarde!</h2>
+                    </div>
+                </div>
                 {% endif %}
 
             </div>
         </div>
     </div>
 </main>
+<script>
+    var cards = document.getElementsByName('CardBasketList');
+
+    for (let i = 0; i < cards.length; i++) {
+        if (cards[i].childElementCount == 1) {
+            cards[i].innerHTML +=
+                '<button onclick="basketListAddHandler(event)" class="btn btn-secondary w-100">Agregar al carrito</button>'
+        }
+    }
+</script>
 <script src="{% static 'wish_list/js/wishlistdeleteItemHandler.js' %}"></script>
 {% endblock %}

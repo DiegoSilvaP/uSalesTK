@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Quiénes somos{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_ck-editor.html'%}
+{% include 'publications/includes/publication_bar.html'%}
+<div class="container">
+    <div class="row">
+        <div class="col-12 py-5">
+            <h3 class="display-3 text-center">
+                Preguntas frecuentes
+            </h3>
+            {% if object_list %}
+            {% for pregunta in object_list %}
+
+            <div class="row py-2">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header"> <a class="btn btn-link" data-toggle="collapse" href="#Answer{{pregunta.id}}"
+                                role="button" aria-expanded="false" aria-controls="collapseExample">
+                                {{pregunta.question}}
+                            </a> </div>
+                        <div class="collapse" id="Answer{{pregunta.id}}">
+                            <div class="card-body">
+                                {{pregunta.answer}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -50,12 +50,9 @@ class ProfileUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileUpdate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
+            
             context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            qty=0
-            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
-                qty += q['quantity']
-            context['basket_quantity'] = qty
+            
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -78,10 +75,6 @@ class EmailUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EmailUpdate, self).get_context_data(**kwargs)
         if self.request.user.is_anonymous !=True:
-            context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
             context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            qty=0
-            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
-                qty += q['quantity']
-            context['basket_quantity'] = qty
+            
         return context

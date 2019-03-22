@@ -1,40 +1,25 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
 from .models import Wish_listItem
 from publications.models import Publication
 from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView
 from django.views.generic import View
-from shopping_basket.models import Shopping_basketItem
-
 from django.contrib.auth.models import User
-from django.core import serializers
-
-
 from django.http import JsonResponse
-
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # Create your views here.
+@method_decorator(login_required, name='dispatch')
 class Wish_listListView(ListView):
     model = Wish_listItem
     def get_context_data(self, **kwargs):
         context = super(Wish_listListView, self).get_context_data(**kwargs)
-        context['wish_list'] = Wish_listItem.objects.filter(customer=self.request.user).values_list("publication").values()
-        if self.request.user.is_anonymous !=True:
-            context['publications'] = Publication.objects.all().values_list("product").values()
-            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            qty=0
-            for q in Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("quantity").values():
-                qty += q['quantity']
-            context['basket_quantity'] = qty
+        context['publications'] = Publication.objects.all()
         return context
 
 
 class Wish_listAdd(View):
     def get(self, request, *args, **kwargs):
         publication = request.GET['publication']
-        # customer = request.GET['customer']
         _publication = Publication.objects.get(id=publication)
         _customer = self.request.user
         Wish_listItem(customer = _customer,publication=_publication).save()
@@ -46,7 +31,6 @@ class Wish_listAdd(View):
 class Wish_listDelete(View):
     def get(self, request, *args, **kwargs):
         publication = request.GET['publication']
-        # customer = request.GET['customer']
         _publication = Publication.objects.get(id=publication)
         _customer = self.request.user
         Wish_listItem.objects.get(customer = _customer,publication=_publication).delete()
