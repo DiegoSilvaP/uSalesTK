@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'core/img/favicon.ico' %}" />
     {% load custom_tags %}
     {% categories as categories %}
     {% aboutus as aboutus %}
@@ -20,25 +21,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="{% static 'core/js/jquery.growl.js' %}"></script>
     <style>
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu>a:after {
-            content: ">";
-            float: right;
-        }
-
-        .dropdown-submenu>.dropdown-menu {
-            top: 0;
-            left: 100%;
-            margin-top: 0px;
-            margin-left: 0px;
-        }
-
-        .dropdown-submenu:hover>.dropdown-menu {
-            display: block;
-        }
     </style>
     <!-- Javascript -->
 
@@ -53,8 +35,6 @@
 </head>
 
 <body>
-
-    <body>
         <!-- Navegación -->
         <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top border-bottom border-secondary">
             <div class="container"> <a class="navbar-brand text-light" href="{% url 'publications:publications'%}">
@@ -82,13 +62,7 @@
                         <li class="nav-item">
                             <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
                                 <span class="fa fa-shopping-cart"></span>
-                                <span class="badge badge-danger badge-pill">
-                                    {% if usuario|basketlist_counter:request.user.id %}
-                                    {{usuario|basketlist_counter:request.user.id}}
-                                    {% else %}
-                                    0
-                                    {% endif %}
-                                </span></a>
+                                <span class="badge badge-danger badge-pill">{% if usuario|basketlist_counter:request.user.id %}{{usuario|basketlist_counter:request.user.id}}{% else %}0{% endif %}</span></a>
                         </li>
                         <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
                                 <span class="fa fa-heart"></span><span id="wishlist_span"
@@ -113,7 +87,7 @@
                                     {% endif %}
                                     <div class="dropdown-divider"></div>
                                     {% if request.user.is_staff %}
-                                    <div class="dropdown-divider"></div>
+                                    
                                     <a class="dropdown-item" href="/admin">Administrador</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}

@@ -10656,13 +10656,30 @@ a.text-dark:focus {
 
 }
 
-/* .card-zoom .wish-button {
-  
-  transform: scale3d(0, 0, 0);
+/* Drop-down submenu */
+
+.dropdown-menu{
+  min-width: 180px;
 }
 
-.card-zoom:hover .wish-button {
-  transform: scale3d(1, 1, 15);
-  transition: 0.3s;
+.dropdown-submenu {
+  position: relative;
+  
+}
 
-} */
+.dropdown-submenu>a:after {
+  font-family: 'Courier New', Courier, monospace;
+  content: "►";
+  float: right;
+}
+
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
