@@ -47,14 +47,6 @@ class ProfileUpdate(UpdateView):
         profile, created = Profile.objects.get_or_create (user=self.request.user)
         return profile
 
-    def get_context_data(self, **kwargs):
-        context = super(ProfileUpdate, self).get_context_data(**kwargs)
-        if self.request.user.is_anonymous !=True:
-            
-            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            
-        return context
-
 @method_decorator(login_required, name='dispatch')
 class EmailUpdate(UpdateView):
     form_class = EmailForm
@@ -71,10 +63,3 @@ class EmailUpdate(UpdateView):
         # Modificacion en tiempo de ejecucion
         form.fields['email'].widget = forms.EmailInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Email'})
         return form
-
-    def get_context_data(self, **kwargs):
-        context = super(EmailUpdate, self).get_context_data(**kwargs)
-        if self.request.user.is_anonymous !=True:
-            context['basket_list'] = Shopping_basketItem.objects.filter(customer=self.request.user.id).values_list("publication").values()
-            
-        return context

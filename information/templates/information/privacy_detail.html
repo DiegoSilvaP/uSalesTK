@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Políticas de privacidad{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_ck-editor.html'%}
+{% include 'publications/includes/publication_bar.html'%}
+<div class="container">
+    <div class="row">
+        <div class="col-12 py-5">
+            <h3 class="display-3 text-center">
+                {{privacy.title}}
+            </h3>
+            <hr>
+            {{privacy.content|safe}}
+            {% if request.user.is_staff %}
+            <a href="{% url 'admin:information_privacy_change' privacy.id  %}" class="btn btn-primary w-100">Editar políticas de privacidad</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

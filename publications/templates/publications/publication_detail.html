@@ -33,7 +33,8 @@
                                 </p>
                                 <hr>
                                 <h2><b>${{publication.price|intcomma}}</b></h4>
-                                    <p>Categoría: <b>{{publication.category}}</b></p>
+                                    <hr>
+                                    <p>Categoría: <br><b>{{publication.category}}</b> {% if publication.subcategory %}<b> -> {{publication.subcategory}}</b>{% endif %}</p>
                                     <hr>
                                     <a href="#" class="btn btn-secondary text-white w-100 disabled">Comprar ahora</a>
                                     <div class="row">

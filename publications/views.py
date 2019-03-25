@@ -1,20 +1,32 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from .models import Publication, Category
+from .models import Publication, Category, SubCategory
 from .filters import ProductFilter
 from .forms import PublicationForm
+from django.views.generic import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.template.defaultfilters import slugify
-from carousel.models import Carousel
+from information.models import Carousel
 # Proteger vistas de usuarios no logueados
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.core import serializers
 
 
 # Create your views here.
+class getSubCategory(View):
+    def get(self, request, *args, **kwargs):
+        category = request.GET['category']
+        print(category)
+        _subCategory = SubCategory.objects.filter(parentCategory=category)
+        print(_subCategory)
+        data =  serializers.serialize('json', _subCategory)
+        return JsonResponse(data, safe=False)
+
 class PublicationListSearchView(ListView):
     model = Publication
     def get_context_data(self, **kwargs):

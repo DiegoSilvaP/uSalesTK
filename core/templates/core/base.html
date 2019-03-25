@@ -19,6 +19,27 @@
     <link href="{% static 'core/css/jquery.growl.css' %}" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="{% static 'core/js/jquery.growl.js' %}"></script>
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu>a:after {
+            content: ">";
+            float: right;
+        }
+
+        .dropdown-submenu>.dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: 0px;
+            margin-left: 0px;
+        }
+
+        .dropdown-submenu:hover>.dropdown-menu {
+            display: block;
+        }
+    </style>
     <!-- Javascript -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
@@ -58,10 +79,16 @@
 
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
-                        <li class="nav-item"> 
+                        <li class="nav-item">
                             <a href="{% url 'shopping_basket:shopping_basket_list' %}" class="btn btn-link">
-                                <span class="fa fa-shopping-cart"></span><span
-                                    class="badge badge-danger badge-pill">{{ usuario|basketlist_counter:request.user.id }}</span></a>
+                                <span class="fa fa-shopping-cart"></span>
+                                <span class="badge badge-danger badge-pill">
+                                    {% if usuario|basketlist_counter:request.user.id %}
+                                    {{usuario|basketlist_counter:request.user.id}}
+                                    {% else %}
+                                    0
+                                    {% endif %}
+                                </span></a>
                         </li>
                         <li class="nav-item "> <a href="{% url 'wish_lists:wish_lists' %}" class="btn btn-link">
                                 <span class="fa fa-heart"></span><span id="wishlist_span"
@@ -72,7 +99,21 @@
                                 <button class="btn btn-link dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">{{request.user.first_name|truncatechars:9}}</button>
                                 <div class="dropdown-menu">
+                                    
+                                    {% if request.user.profile.avatar %}
+                                    <a href="{% url 'profile' %}">
+                                        <img src="{{request.user.profile.avatar.url}}" class="img-fluid d-block mx-auto"
+                                            style="height:60px;">
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'profile' %}">
+                                        <img src="{% static 'registration/img/no-avatar.jpg' %}"
+                                            class="img-fluid d-block mx-auto" style="height:60px;">
+                                    </a>
+                                    {% endif %}
+                                    <div class="dropdown-divider"></div>
                                     {% if request.user.is_staff %}
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/admin">Administrador</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}
@@ -112,29 +153,31 @@
                     <div class="p-4 col-md-6">
                         <h2 class="mb-4">Mapa del sitio</h2>
                         <ul class="list-unstyled">
-                            
-                                {% if aboutus %}
-                                <a class="nav-link"
-                                    href="{% url 'about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
-                                {% else %}
-                                <a class="nav-link disabled" href="#">Acerca de</a>
-                                {% endif %}
-                            
-                            
+
+                            {% if aboutus %}
+                            <a class="nav-link"
+                                href="{% url 'information:about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
+                            {% else %}
+                            <a class="nav-link disabled" href="#">Acerca de</a>
+                            {% endif %}
+
+
+                            <li class="nav-item">
                                 {% if FAQ|length > 0 %}
-                                <a class="nav-link" href="{% url 'FAQ' %}">Preguntas frecuentes</a>
+                                <a class="nav-link" href="{% url 'information:FAQ' %}">Preguntas frecuentes</a>
                                 {% else %}
                                 <a class="nav-link disabled" href="#">Preguntas frecuentes</a>
                                 {% endif %}
-                            
-                            
-                                {% if privacy %}
-                                <a class="nav-link"
-                                    href="{% url 'privacy' privacy.id privacy.title|slugify %}">{{privacy}}</a>
-                                {% else %}
-                                <a class="nav-link disabled" href="#">Políticas de privacidad</a>
-                                {% endif %}
-                            
+                            </li>
+
+
+                            {% if privacy %}
+                            <a class="nav-link"
+                                href="{% url 'information:privacy' privacy.id privacy.title|slugify %}">{{privacy}}</a>
+                            {% else %}
+                            <a class="nav-link disabled" href="#">Políticas de privacidad</a>
+                            {% endif %}
+
                         </ul>
                     </div>
                     <div class="p-4 col-md-6">

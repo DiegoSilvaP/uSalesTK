@@ -2,7 +2,15 @@
 {% load static %}
 {% block title %}Registro{% endblock %}
 {% block content %}
-<style>.errorlist{color:red;} label{display:none}</style>
+<style>
+  .errorlist {
+    color: red;
+  }
+
+  label {
+    display: none
+  }
+</style>
 <main role="main">
 
   <div class="container">
@@ -77,22 +85,20 @@
   <script>
     $(document).ready(function () {
       console.log("ready!");
-    var ul = document.getElementById('errorList').lastElementChild.children[1];
-    for (i = 0; i < ul.childElementCount; i++) {
-      console.log(ul.children[i].textContent);
-    }
-
-
-    function showMessage() {
-      if (ul.childElementCount > 0) {
-        $.growl.error({
-          message: "The kitten is cute!"
-        });
+      var ul = document.getElementById('errorList').lastElementChild.children[1];
+      for (i = 0; i < ul.childElementCount; i++) {
+        console.log(ul.children[i].textContent);
       }
-    }
-    });
 
-    
+
+      function showMessage() {
+        if (ul.childElementCount > 0) {
+          $.growl.error({
+            message: "The kitten is cute!"
+          });
+        }
+      }
+    });
   </script>
 </main>
 {% endblock %}

@@ -21,15 +21,23 @@
           </div>
           {% endfor %}
           {% endif %}
+          
         </div>
         <ol class="carousel-indicators">
           <li data-target="#carousel1" data-slide-to="0" class="active"> </li>
           <li data-target="#carousel1" data-slide-to="1"> </li>
           <li data-target="#carousel1" data-slide-to="2"> </li>
         </ol>
+        {% if request.user.is_staff %}
+        <a href="{% url 'admin:information_carousel_changelist' %}" class="btn btn-danger" style="position: absolute; top:10px; left: 10px; z-index: 10000;">
+          <i class="fa fa-pencil"></i>
+        </a>
+        {% endif %}
       </div>
+      
     </div>
   </div>
+  
 </div>
 <div class="py-3">
   <div class="container">
@@ -150,10 +158,6 @@
 
 
 <link href="{% static 'publications/css/custom_ckeditor.css' %}" rel="stylesheet">
-<script>
-  
-</script>
-<!-- <script src="{% static 'publications/js/publication_detail_wishlistHandler.js' %}"></script> -->
 <script src="{% static 'publications/js/publication_list_wishlistHandler.js' %}"></script>
 
 {% endblock %}

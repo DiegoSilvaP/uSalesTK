@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 import django_filters
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 
@@ -11,9 +13,12 @@ import django_filters
 def custom_upload_to(instance, filename):
     # 'instance' hace referencia al objeto que se esta guardando, pero despues de que se haya confirmado el nuevo valor,
     # en 'filename tendremos el nombre del fichero con la imagen que queremos sobreescribir
-    old_instance = products.objects.get(pk=instance.pk)
-    old_instance.picture.delete()
-    return 'publications/'+filename
+    if instance.pk == None:
+        return 'publications/'+filename
+    else:
+        old_instance = Publication.objects.get(pk=instance.pk)
+        old_instance.picture.delete()
+        return 'publications/'+filename
 
 
 class Category(models.Model):
@@ -27,9 +32,29 @@ class Category(models.Model):
         verbose_name = "categoria"
         verbose_name_plural = "categorías"
         # ordenamiento
-        # por defecto, django ordena del más viejo al mas nuevo, por lo que se le agrega un -
-        # para ordenar del mas nuevo al mas viejo
-        ordering = ["name"]
+        ordering = ['-created', 'name']
+        
+        
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    parentCategory = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Categoría padre", default=1)
+    name = models.CharField(max_length=100, verbose_name="Nombre")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
+
+    
+    # Hay que agregar una subclase para modificar los nombres y ponerlos en español
+    class Meta:
+        verbose_name = "subcategoria"
+        verbose_name_plural = "subcategorías"
+        # ordenamiento
+        ordering = ['-created', '-parentCategory']
+        
+        
 
     def __str__(self):
         return self.name
@@ -37,20 +62,21 @@ class Category(models.Model):
 
 # Create your models here.
 class Publication(models.Model):
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Vendedor", default=1)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Vendedor", default=2)
     product = models.TextField(verbose_name="Producto", max_length=200)
     description = RichTextField(verbose_name="Descripción")
     stock = models.PositiveSmallIntegerField(verbose_name="Cantidad", default=10)
     price = models.DecimalField(verbose_name="Precio por unidad", decimal_places=1, max_digits=8, default=0)
-    category = models.ForeignKey(Category, verbose_name="Categoria", related_name="get_categories", on_delete=models.CASCADE, default="")
-    picture = models.ImageField(verbose_name="Imagen del encabezado", upload_to='publications', null=True, blank=True)
+    category = models.ForeignKey(Category, verbose_name="Categoría", related_name="get_categories", on_delete=models.CASCADE, default="")
+    subcategory = models.ForeignKey(SubCategory, verbose_name="Subcategoría", related_name="get_subcategories", on_delete=models.CASCADE, blank=True, null=True)
+    picture = models.ImageField(verbose_name="Imagen del encabezado", upload_to=custom_upload_to)
     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
 
 
     class Meta:
-        verbose_name = "Publicación"
-        verbose_name_plural = "Publicaciones"
+        verbose_name = "publicación"
+        verbose_name_plural = "publicaciones"
         ordering = ['-created', 'product']
 
     def __str__(self):

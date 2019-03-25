@@ -4,6 +4,9 @@
 {% block content %}
 {% include 'publications/includes/publication_ck-editor.html'%}
 {% include 'publications/includes/publication_bar.html'%}
+{% load custom_tags %}
+{% categories as categories %}
+
 <main role="main">
     <div class="col-md-2">
 
@@ -43,7 +46,8 @@
 
                                     <input type="file" name="picture" accept="image/*" id="id_picture"
                                         style="display:none">
-                                    <label tabindex="0" for="id_picture" class="btn btn-secondary w-100">Selecciona una imagen</label>
+                                    <label tabindex="0" for="id_picture" class="btn btn-secondary w-100">Selecciona una
+                                        imagen</label>
 
 
                                 </div>
@@ -76,8 +80,23 @@
                                     <hr>
                                     <h4> Categoría </h4>
                                     <div class="row">
+
                                         <div class="col-md-12 text-center">
-                                            {{form.category}}
+                                            <select name="category" onchange="getSubCategory(event)"
+                                                class="form-control" id="id_category">
+                                                {% for categoria in categories %}
+                                                <option value="{{categoria.id}}">{{categoria.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h4> SubCategoría </h4>
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <select name="subcategory" class="form-control" id="id_subcategory">
+                                                    <!-- <option value="" selected="">---------</option> -->
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -98,26 +117,7 @@
             <!-- <div class="col-md-2"></div> -->
         </div>
     </div>
-    <script>
-        var user_id = document.getElementById('user').value;
-        document.getElementById('id_seller').value = user_id;
-
-        $("#id_picture").on("change", function () {
-            readURL(this);
-        });
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#imgPreview')
-                        .attr('src', e.target.result);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
+    <script src="{% static 'publications/js/getSubCategoriesHandler.js' %}"></script>
+    <script src="{% static 'publications/js/dynamicImageUpdate.js' %}"></script>
 </main>
 {% endblock %}

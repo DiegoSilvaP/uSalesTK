@@ -21,6 +21,7 @@ from django.conf import settings
 from publications.urls import publications_patterns
 from wish_list.urls import wish_list_patterns
 from shopping_basket.urls import shopping_basket_patterns
+from information.urls import information_patterns
 
 
 urlpatterns = [
@@ -29,9 +30,9 @@ urlpatterns = [
     path('', include(publications_patterns)),
     path('wish_lists/', include(wish_list_patterns)),
     path('shopping_basket_lists/', include(shopping_basket_patterns)),
-    path('information/', include('information.urls')),
-    path('privacy/', include('privacyPolicy.urls')),
-    path('FAQ/', include('faq.urls')),
+    path('information/', include(information_patterns)),
+    # path('privacy/', include('privacyPolicy.urls')),
+    # path('FAQ/', include('faq.urls')),
 
     # Paths de Auth
     path('accounts/', include('django.contrib.auth.urls')),

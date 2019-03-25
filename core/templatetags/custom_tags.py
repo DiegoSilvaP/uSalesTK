@@ -1,10 +1,12 @@
 from django import template
 from wish_list.models import Wish_listItem
 from shopping_basket.models import Shopping_basketItem
-from publications.models import Category
-from information.models import AboutUs
-from privacyPolicy.models import Privacy
-from faq.models import FAQ
+from publications.models import Category, SubCategory
+from information.models import AboutUs, Privacy, FAQ
+# from privacyPolicy.models import Privacy
+# from faq.models import FAQ
+from django.db.models import Sum
+
 
 register = template.Library()
 
@@ -14,10 +16,10 @@ def wishlist_counter(usuario, id):
 
 @register.filter
 def basketlist_counter(usuario, id):
-    qty=0
-    for q in Shopping_basketItem.objects.filter(customer=id):
-        qty+=q.quantity
-    return qty
+    # qty=0
+    # for q in Shopping_basketItem.objects.filter(customer=id):
+        # qty+=q.quantity
+    return Shopping_basketItem.objects.filter(customer=id).aggregate(Sum('quantity'))['quantity__sum']
 
 @register.simple_tag(takes_context=True)
 def wish_list(context):
@@ -30,6 +32,10 @@ def basket_list(context):
 @register.simple_tag
 def categories():
     return Category.objects.all()
+
+@register.simple_tag
+def subCategories():
+    return SubCategory.objects.all()
 
 @register.simple_tag
 def aboutus():

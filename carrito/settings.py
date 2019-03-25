@@ -46,9 +46,6 @@ INSTALLED_APPS = [
     'wish_list.apps.Wish_listConfig',
     'django_filters',
     'information.apps.InformationConfig',
-    'carousel.apps.CarouselConfig',
-    'privacyPolicy.apps.PrivacypolicyConfig',
-    'faq.apps.FaqConfig',
 ]
 
 MIDDLEWARE = [

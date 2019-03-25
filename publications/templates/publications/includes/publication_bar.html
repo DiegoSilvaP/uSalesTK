@@ -1,7 +1,10 @@
 {% load custom_tags %}
 {% categories as categories %}
+{% subCategories as subCategories %}
 {% aboutus as aboutus %}
 {% privacy as privacy %}
+{% faq as FAQ %}
+
 {% faq as FAQ %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container"> <button class="navbar-toggler navbar-toggler-right border-0" type="button"
@@ -14,39 +17,54 @@
                 </li>
                 <li class="nav-item mx-2 ">
                     {% if aboutus %}
-                    <a class="nav-link" href="{% url 'about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
+                    <a class="nav-link" href="{% url 'information:about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
                     {% else %}
                     <a class="nav-link disabled" href="#">Acerca de</a>
                     {% endif %}
                 </li>
                 <li class="nav-item mx-2 ">
                     {% if FAQ|length > 0 %}
-                    <a class="nav-link" href="{% url 'FAQ' %}">Preguntas frecuentes</a>
+                    <a class="nav-link" href="{% url 'information:FAQ' %}">Preguntas frecuentes</a>
                     {% else %}
                     <a class="nav-link disabled" href="#">Preguntas frecuentes</a>
                     {% endif %}
                 </li>
                 <li class="nav-item mx-2 ">
                     {% if privacy %}
-                    <a class="nav-link" href="{% url 'privacy' privacy.id privacy.title|slugify %}">{{privacy}}</a>
+                    <a class="nav-link" href="{% url 'information:privacy' privacy.id privacy.title|slugify %}">{{privacy}}</a>
                     {% else %}
                     <a class="nav-link disabled" href="#">Políticas de privacidad</a>
                     {% endif %}
                 </li>
-                <li class="nav-item mx-2 ">
-                    <div class="btn-group pi-draggable" draggable="true">
-                        <a data-toggle="dropdown" href="" class="nav-link dropdown-toggle" aria-expanded="false">
-                            Categorias</a>
-                        <div class="dropdown-menu">
-                            {% for category in categories %}
-                            <a class="dropdown-item" href="#">{{category}}</a>
+                <li class="nav-item mx-2">
+                    <div class="btn-group ">
+                        <a id="dLabel" role="button" data-toggle="dropdown" class="nav-link dropdown-toggle" href="">
+                            Categorías
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            {% for categoria in categories %}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" tabindex="-1" href="#">
+                                    {{categoria}}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for subcategoria in subCategories %}
+                                    {% if subcategoria.parentCategory == categoria %}
+                                    <li>
+                                        <a class="dropdown-item" tabindex="-1" href="#">{{subcategoria}}</a>
+                                    </li>
+                                    <div class="dropdown-divider"></div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% if forloop.last == False %}
                             <div class="dropdown-divider"></div>
+                            {% endif %}
                             {% endfor %}
-
-                        </div>
+                        </ul>
                     </div>
                 </li>
-
             </ul>
         </div>
     </div>

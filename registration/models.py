@@ -18,8 +18,8 @@ def custom_upload_to(instance, filename):
 class Profile(models.Model):
     # Relacion 1 a 1, le indica al modelo que solo puede haber un perfil por usuario
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.TextField(max_length=10)
-    addess = models.TextField(max_length=100)
+    phone = models.TextField(max_length=10,null=True, blank=True, default='')
+    address = models.TextField(max_length=100,null=True, blank=True, default='')
     avatar = models.ImageField(upload_to=custom_upload_to, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
