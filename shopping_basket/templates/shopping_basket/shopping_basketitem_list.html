@@ -5,14 +5,15 @@
 {% load humanize %}
 {% include 'publications/includes/publication_bar.html'%}
 {% load custom_tags %}
+{% basket_list as basket_list %}
 <main role="main">
     <div class="container">
         <h4 class="display-4">Carrito de compras</h4>
-        
+
         <div class="row py-4">
             <div class="col 12">
-                {% if object_list %}
-                {% for basketItem in object_list %}
+                {% if basket_list %}
+                {% for basketItem in basket_list %}
                 {% for producto in publications %}
                 {% if basketItem.customer_id == request.user.id and producto.id == basketItem.publication_id %}
                 <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">
@@ -21,11 +22,13 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <a href="{% url 'publications:publication' producto.id producto.product|slugify %}">
-                                    <img class="img-fluid d-block mx-auto" src="{{producto.picture.url}}" style="height:150px"></a></div>
+                                    <img class="img-fluid d-block mx-auto" src="{{producto.picture.url}}"
+                                        style="height:150px"></a></div>
                             <div class="col-md-9">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="{% url 'publications:publication' producto.id producto.product|slugify %}">
+                                        <a
+                                            href="{% url 'publications:publication' producto.id producto.product|slugify %}">
                                             <h3>{{producto.product}}</h3>
                                         </a>
                                     </div>
@@ -33,16 +36,17 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <input oninput="contador(event)" class="form-control" type="number"
-                                                    name="quantity" min="1" max="{{producto.stock}}" value="{{basketItem.quantity}}">
-                                                <input type="text" name="product_id" id="product_id" value="{{producto.id}}"
-                                                    style="display:none">
+                                                    name="quantity" min="1" max="{{producto.stock}}"
+                                                    value="{{basketItem.quantity}}">
+                                                <input type="text" name="product_id" id="product_id"
+                                                    value="{{producto.id}}" style="display:none">
                                             </div>
                                             <div class="col-12">
                                                 <b>{{producto.stock}} </b>disponibles
                                             </div>
                                             <div class="col-md-12 py-1">
-                                                <input type="text" name="publication" id="publication" value="{{producto.id}}"
-                                                    style="display:none">
+                                                <input type="text" name="publication" id="publication"
+                                                    value="{{producto.id}}" style="display:none">
                                             </div>
                                         </div>
                                     </div>
@@ -57,7 +61,8 @@
                                                     href="#">Quitar del carrito</a>
                                             </div>
                                             <div class="col-md-12 py-1">
-                                                <a class="btn btn-primary w-100 disabled" href="#">Comprar ahora</a>
+                                                <button class="btn btn-primary w-100"
+                                                    onclick="orderProductHandler(event)">Comprar ahora</button>
                                             </div>
                                         </div>
 
@@ -69,21 +74,20 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                {% endfor%}
+                {% endfor %}
 
                 <!-- Pagar todo -->
                 <div class="card my-4">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
-
-                            </div>
-                            <div class="col-md-3">
-
-                            </div>
-                            <div class="col-md-3 text-right">
+                            <div class="col-md-9 text-right">
                                 <h4 id="txtTotalProductos">Productos ()</h4>
-                                <h4>Envio a ...</h4>
+                                {% if request.user.profile.address %}
+                                <h4>Envio a <b>{{request.user.profile.address|truncatechars:40}}</b> <button
+                                        class="btn btn-outline-secondary"><i class="fa fa-pencil"></i></button></h4>
+                                {% else %}
+                                <button class="btn btn-primary">Agregar dirección</button>
+                                {% endif %}
                                 <h4><b>Total</b></h4>
 
                             </div>
@@ -92,14 +96,13 @@
                                 <h4 class="text-success">Gratis</h4>
                                 <h3><b id="txtcompraTotal">$0</b></h3>
                                 <hr>
-                                <button class="btn btn-secondary w-100 disabled">Comprar todo</button>
+                                <button class="btn btn-secondary w-100">Comprar todo</button>
                             </div>
 
                         </div>
                     </div>
                 </div>
                 {% else %}
-
                 <div class="card">
                     <div class="card-body">
                         <h1 class="">No tienes productos en el carrito</h1>
@@ -108,11 +111,11 @@
                         <h2>¡Tenemos miles de productos para ti!</h2>
                     </div>
                 </div>
-
                 {% endif %}
             </div>
         </div>
     </div>
 </main>
+<script src="{% static 'shopping_basket/js/ordersHandler.js' %}"></script>
 <script src="{% static 'shopping_basket/js/totalBasketHandler.js' %}"></script>
 {% endblock %}

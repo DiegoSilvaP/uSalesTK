@@ -11,10 +11,6 @@ from django.utils.decorators import method_decorator
 @method_decorator(login_required, name='dispatch')
 class Wish_listListView(ListView):
     model = Wish_listItem
-    def get_context_data(self, **kwargs):
-        context = super(Wish_listListView, self).get_context_data(**kwargs)
-        context['publications'] = Publication.objects.all()
-        return context
 
 
 class Wish_listAdd(View):

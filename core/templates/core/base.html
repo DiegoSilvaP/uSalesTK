@@ -20,8 +20,6 @@
     <link href="{% static 'core/css/jquery.growl.css' %}" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="{% static 'core/js/jquery.growl.js' %}"></script>
-    <style>
-    </style>
     <!-- Javascript -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
@@ -93,7 +91,7 @@
                                     {% endif %}
                                     <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item disabled" href="#">Compras</a>
+                                    <a class="dropdown-item" href="{% url 'orders:orders' %}">Pedidos</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item disabled" href="#">Ventas</a>
                                     <div class="dropdown-divider"></div>

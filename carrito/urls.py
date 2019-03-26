@@ -22,6 +22,7 @@ from publications.urls import publications_patterns
 from wish_list.urls import wish_list_patterns
 from shopping_basket.urls import shopping_basket_patterns
 from information.urls import information_patterns
+from orders.urls import orders_patterns
 
 
 urlpatterns = [
@@ -31,6 +32,7 @@ urlpatterns = [
     path('wish_lists/', include(wish_list_patterns)),
     path('shopping_basket_lists/', include(shopping_basket_patterns)),
     path('information/', include(information_patterns)),
+    path('orders/', include(orders_patterns)),
     # path('privacy/', include('privacyPolicy.urls')),
     # path('FAQ/', include('faq.urls')),
 

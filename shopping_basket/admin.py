@@ -8,4 +8,4 @@ class Shopping_basketAdmin(admin.ModelAdmin):
     readonly_fields=('created', 'updated')
     verbose_name = 'Carrito de compra'
 
-admin.site.register(Shopping_basketItem, Shopping_basketAdmin)
+# admin.site.register(Shopping_basketItem, Shopping_basketAdmin)

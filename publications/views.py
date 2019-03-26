@@ -21,9 +21,7 @@ from django.core import serializers
 class getSubCategory(View):
     def get(self, request, *args, **kwargs):
         category = request.GET['category']
-        print(category)
         _subCategory = SubCategory.objects.filter(parentCategory=category)
-        print(_subCategory)
         data =  serializers.serialize('json', _subCategory)
         return JsonResponse(data, safe=False)
 

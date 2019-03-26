@@ -62,47 +62,6 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.name
 
-
-
-# class Category(models.Model):
-#     name = models.CharField(max_length=100, verbose_name="Nombre")
-#     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
-#     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
-
-    
-#     # Hay que agregar una subclase para modificar los nombres y ponerlos en español
-#     class Meta:
-#         verbose_name = "categoria"
-#         verbose_name_plural = "categorías"
-#         # ordenamiento
-#         ordering = ['-created', 'name']
-        
-        
-
-#     def __str__(self):
-#         return self.name
-
-
-# class SubCategory(models.Model):
-#     parentCategory = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Categoría padre", default=1)
-#     name = models.CharField(max_length=100, verbose_name="Nombre")
-#     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
-#     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
-
-    
-#     # Hay que agregar una subclase para modificar los nombres y ponerlos en español
-#     class Meta:
-#         verbose_name = "subcategoria"
-#         verbose_name_plural = "subcategorías"
-#         # ordenamiento
-#         ordering = ['-created', '-parentCategory']
-        
-        
-
-#     def __str__(self):
-#         return self.name
-    
-
 # Create your models here.
 class Publication(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Vendedor", default=2)

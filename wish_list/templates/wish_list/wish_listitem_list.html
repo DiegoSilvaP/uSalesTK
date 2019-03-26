@@ -5,15 +5,17 @@
 {% load humanize %}
 {% include 'publications/includes/publication_bar.html'%}
 {% load custom_tags %}
+{% wish_list as wish_list %}
 {% basket_list as basket_list %}
+{% publications as publications %}
 
 <main role="main">
     <div class="container">
         <h4 class="display-4">Lista de deseos</h4>
         <div class="row py-4">
             <div class="col 12">
-                {% if object_list %}
-                {% for deseado in object_list %}
+                {% if wish_list %}
+                {% for deseado in wish_list %}
                 {% for producto in publications %}
                 {% if deseado.customer_id == request.user.id and producto.id == deseado.publication_id %}
                 <input type="text" name="user" id="user" value="{{request.user.id}}" style="display:none">

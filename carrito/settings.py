@@ -42,10 +42,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'core',
     'publications.apps.PublicationsConfig',
-    'shopping_basket.apps.ShoppingBasketConfig',
+    'shopping_basket',
     'wish_list.apps.Wish_listConfig',
     'django_filters',
     'information.apps.InformationConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
