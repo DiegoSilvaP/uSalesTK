@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Lista de pedidos{% endblock %}
+{% block content %}
+{% load humanize %}
+{% include 'publications/includes/publication_bar.html'%}
+{% load custom_tags %}
+{% payment_methods as payment_methods %}
+<main>
+    <div class="container">
+    {{orders_list}}
+        <h4 class="display-4">Vamos a finalizar la compra</h4>
+        <div class="row py-4">
+            <div class="col-2">
+            </div>
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="display-5">({{orders.quantity}}) {{orders}} - $ <b>{{orders.subtotal}}</b></h5> Folio: {{orders.folio}}
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {%csrf_token%}
+                        Elige un método de pago
+                        <select name="payment_method" id="id_payment_method" class="form-control mb-3">
+                            {% for tarjeta in payment_methods %}
+                                <option value="{{tarjeta.id}}">{{tarjeta.entity}} ************{{tarjeta.card_number|slice:"12:16"}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <input type="text" name="payment_status" id="id_payment_status" value="2" style="display:none">
+                        <input type="submit" value="Terminar compra" class="btn btn-primary w-100">
+                    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

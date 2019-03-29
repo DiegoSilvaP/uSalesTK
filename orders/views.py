@@ -1,8 +1,6 @@
-from django.shortcuts import render, resolve_url, redirect
+from django.shortcuts import render, resolve_url, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views import View
 from .models import Orders
 from publications.models import Publication
@@ -10,6 +8,8 @@ from shopping_basket.models import Shopping_basketItem
 from django.http import JsonResponse
 import datetime
 from random import randint
+from .forms import OrderForm
+from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -18,6 +18,11 @@ from django.utils.decorators import method_decorator
 @method_decorator(login_required, name='dispatch')
 class OrdersListView(ListView):
     model = Orders
+
+# class OrderCreate(CreateView):
+#     model = Orders
+#     form_class = OrderForm
+#     success_url = reverse_lazy('orders:orders')
 
 class OrderCreate(View):
     def get(self, request, *args, **kwargs):
@@ -35,5 +40,13 @@ class OrderCreate(View):
             'result':1
         }
         return JsonResponse(data)
+
+class OrderUpdate(UpdateView):
+    model = Orders
+    form_class = OrderForm
+    template_name_suffix = '_update_form'
+    # template_name = 'orders/order-finish_purchase.html'
+    def get_success_url(self):
+        return  reverse_lazy('orders:orders') + '?success'
         
 

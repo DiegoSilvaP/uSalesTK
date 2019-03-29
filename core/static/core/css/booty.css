@@ -10637,7 +10637,7 @@ a.text-dark:focus {
 
 /* card zoom effect */
 .card {
-  transition: 0.3s;
+  transition: 0.17s;
 }
 
 .card-zoom .card-text {
@@ -10652,7 +10652,7 @@ a.text-dark:focus {
 
 .card-zoom:hover .card-text {
   font-size: 100%;
-  transition: 0.3s;
+  transition: 0.17s;
 
 }
 

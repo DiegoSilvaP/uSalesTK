@@ -1,13 +1,17 @@
 from .forms import UserCreationFormWithEmail
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+
 # Para acceder a los tipos de widgets de un form
 from django import forms
-from django.views.generic.edit import UpdateView
+from django.views.generic import UpdateView, TemplateView, DeleteView
+
+
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .models import Profile
-from .forms import ProfileForm, EmailForm
+from .models import Profile, Plastic_money
+from .forms import ProfileForm, EmailForm, CreditCardForm
 from shopping_basket.models import Shopping_basketItem
 
 from wish_list.models import Wish_listItem
@@ -36,6 +40,23 @@ class SignUpView(CreateView):
          
         return form
 
+
+@method_decorator(login_required, name='dispatch')
+class ProfileResume(TemplateView):
+    template_name = 'registration/resume.html'
+
+
+@method_decorator(login_required, name='dispatch')
+class CreditCardsView(TemplateView):
+    template_name = 'registration/paymentMethods.html'
+    def get_context_data(self, **kwargs):
+       context = super(CreditCardsView, self).get_context_data(**kwargs)
+       # here's the difference:
+       context['plastic_money'] = Plastic_money.objects.filter(owner_profile=self.request.user)
+       return context
+    
+
+
 @method_decorator(login_required, name='dispatch')
 class ProfileUpdate(UpdateView):
     form_class = ProfileForm
@@ -63,3 +84,16 @@ class EmailUpdate(UpdateView):
         # Modificacion en tiempo de ejecucion
         form.fields['email'].widget = forms.EmailInput(attrs={'class' : 'form-control mb-2', 'placeholder' : 'Email'})
         return form
+
+
+@method_decorator(login_required, name='dispatch')
+class CreditCardDelete(DeleteView):
+    model = Plastic_money
+    success_url = reverse_lazy('paymentMethods')
+
+@method_decorator(login_required, name='dispatch')
+class CreditCardCreate(CreateView):
+    model = Plastic_money
+    form_class = CreditCardForm
+    success_url = reverse_lazy('paymentMethods')
+

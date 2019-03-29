@@ -89,7 +89,13 @@
                                     <a class="dropdown-item" href="/admin">Administrador</a>
                                     <div class="dropdown-divider"></div>
                                     {% endif %}
-                                    <a class="dropdown-item" href="{% url 'profile' %}">Perfil</a>
+                                    
+                                    <div class="row px-1">
+                                        <div class="col-12">
+                                            <a class="btn btn-primary w-100" href="{% url 'resume' %}">Cuenta</a>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url 'orders:orders' %}">Pedidos</a>
                                     <div class="dropdown-divider"></div>

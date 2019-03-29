@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Plastic_money
 
 class UserCreationFormWithEmail(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Requerido, 254 caracteres como maximo y debe ser un correo válido')
@@ -51,3 +51,18 @@ class EmailForm(forms.ModelForm):
             if User.objects.filter(email=email).exists():
                 raise forms.ValidationError('El email ya está registrado, prueba con otro.')
         return email
+
+class CreditCardForm(forms.ModelForm):
+    class Meta:
+        model = Plastic_money
+        fields = ['entity', 'card_number','exp_month', 'exp_year', 'owner_profile', 'owner','cvv']
+        widgets = {
+            'entity': forms.Select(attrs={'class':'form-control mt-3'}),
+            # 'type_card': forms.Select(attrs={'class':'form-control mt-3'}),
+            'card_number': forms.TextInput(attrs={'class':'form-control mt-3'}),
+            'exp_month': forms.Select(attrs={'class':'form-control mt-3'}),
+            'exp_year': forms.Select(attrs={'class':'form-control mt-3'}),
+            'owner_profile': forms.TextInput(attrs={'class':'form-control mt-3'}),
+            'owner': forms.TextInput(attrs={'class':'form-control mt-3'}),
+            'cvv': forms.TextInput(attrs={'class':'form-control mt-3'}),
+        }

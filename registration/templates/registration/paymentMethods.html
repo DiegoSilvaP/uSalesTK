@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+{% load custom_tags %}
+{% wish_list as wish_list %}
+{% basket_list as basket_list %}
+{% orders_list as orders_list %}
+
+<main>
+
+    <div class="container">
+        <h4 class="display-4">Métodos de pago</h4>
+        <a href="{% url 'creditcardcreate' %}" class="btn btn-primary">Agregar método de pago</a>
+        <div class="row py-4">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if plastic_money %}
+                        {% for tarjeta in plastic_money %}
+                        <div class="row">
+                            <div class="col-10">
+                                <h4>{{tarjeta.entity}}
+                                    {{tarjeta.international_brand}}</h4>
+                                    ************<b>{{tarjeta.card_number|slice:"12:16"}}</b> Vencimiento
+                                {{tarjeta.exp_month}}/{{tarjeta.exp_year}}
+                            </div>
+                            <div class="col-2 text-right">
+                                <a href="{% url 'creditcarddelete' tarjeta.id %}" class="btn btn-outline-secondary">
+                                    <i class="fa fa-eraser"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% if forloop.last == False %}
+                        <hr>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <h4>Aún no tienes métodos de pago agregados.</h4>
+                        <h5>Agrega un método de pago para empezar a disfrutar de las compras en <b>uSalesTK</b></h5>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}

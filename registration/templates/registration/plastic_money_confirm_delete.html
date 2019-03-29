@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Eliminar {{object}}{% endblock %}
+{% block content %}
+{% include 'publications/includes/publication_bar.html'%}
+
+<main role="main">
+    <div class="container">
+        <div class="row py-4">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h3 class="card-title"><b>Eliminar tarjeta</b></h3>
+                        <form action="" method="post">{% csrf_token %}
+                            <p>¿Estás seguro de eliminar "<b>{{ object.entity }}</b>" ************<b>{{object.card_number|slice:"12:16"}}</b> ?</p>
+                            <input type="submit" value="Sí, eliminar tarjeta" class="btn btn-secondary btn-block" />
+                            <a href="{% url 'publications:publications'%}" class="btn btn-outline-secondary btn-block">No</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    {% endblock %}

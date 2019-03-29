@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+<main>
+    <div class="container">
+        <h4 class="display-4">Agregar método de pago</h4>
+        <div class="row py-4">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            Titular:
+                            <input type="text" name="owner" id="id_owner" class="form-control mb-3">
+                            Banco:
+                            <select name="entity" id="id_entity" required class="form-control mb-3">
+                                {{form.entity.errors}}
+                                {% for x,y in form.fields.entity.choices %}
+                                <option value="{{ x }}" {% if form.entity.value == x %} selected{% endif %}>
+                                    {{ y }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="row">
+                                <div class="col-9">
+                                    Número de tarjeta:
+                                    {{form.card_number.errors}}
+                                    <input type="password" name="card_number" class="form-control mb-3" id="id_card_number"
+                                        value="" minlength="16" maxlength="16">
+
+                                </div>
+                                <div class="col-3">
+                                    {{form.cvv.errors}}
+                                    CCV
+                                    <input type="password" name="cvv" class="form-control mb-3" id="id_cvv" value=""
+                                        minlength="3" maxlength="3">
+                                </div>
+                            </div>
+                            Expiración:
+
+                            <div class="row">
+                                <div class="col-6">
+                                    Mes:{{form.exp_month.errors}}
+
+                                    <select name="exp_month" id="id_exp_month" class="form-control mb-3">
+                                        {% for x,y in form.fields.exp_month.choices %}
+                                        <option value="{{ x }}" {% if form.exp_month.value == x %} selected{% endif %}>
+                                            {{ y }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+
+                                <div class="col-6">
+                                    Año:{{form.exp_year.errors}}
+                                    <select name="exp_year" id="id_exp_year" class="form-control mb-3">
+                                        {% for x,y in form.fields.exp_year.choices %}
+                                        <option value="{{ x }}" {% if form.exp_year.value == x %} selected{% endif %}>
+                                            {{ y }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="text" name="owner_profile" class="form-control mb-3" id="id_owner_profile"
+                                value="{{request.user.id}}" style="display:none">
+
+                            <input type="submit" class="btn btn-primary btn-block mt-3" value="Agregar">
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}

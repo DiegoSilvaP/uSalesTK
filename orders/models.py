@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from publications.models import Publication
+from registration.models import Plastic_money
 # Create your models here.
 class Orders(models.Model):
     PAYMENT_CHOICES = (
@@ -19,8 +20,10 @@ class Orders(models.Model):
     product = models.ForeignKey(Publication, on_delete=models.CASCADE,verbose_name="Publicación", default=1)
     quantity = models.PositiveSmallIntegerField(verbose_name="Cantidad", default=1)
     subtotal = models.DecimalField(verbose_name="Subtotal", decimal_places=1, max_digits=8, default=0)
+    payment_method = models.ForeignKey(Plastic_money, verbose_name='Método de pago', on_delete=models.CASCADE, blank=True, null=True)
     payment_status = models.IntegerField(verbose_name='Estado del pago', choices=PAYMENT_CHOICES, default=1)
     shipping_status = models.IntegerField(verbose_name='Estado del envío', choices=SHIPPING_CHOICES, default=1)
+    shipping_tracker = models.CharField(verbose_name='Número de seguimiento', max_length=32, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name="Creado")
     updated = models.DateTimeField(auto_now=True, verbose_name="Actualizado")
 

@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+{% load custom_tags %}
+{% wish_list as wish_list %}
+{% basket_list as basket_list %}
+{% orders_list as orders_list %}
+
+<main>
+    <div class="container">
+            <h4 class="display-4">Resumen</h4>
+        <div class="row py-4">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-12">
+                                {% if request.user.profile.avatar %}
+                                <img src="{{request.user.profile.avatar.url}}" class="img-fluid rounded"
+                                    style="height: 150px;">
+                                {% else %}
+                                <img src="{% static 'registration/img/no-avatar.jpg' %}" class="img-fluid rounded"
+                                    style="height: 150px;">
+                                
+                                {% endif %}
+                                <h4>Hola, <b>{{request.user}}</b></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action"><b>Actualizar perfil</b></a>
+                        <a href="{% url 'paymentMethods' %}" class="list-group-item list-group-item-action"><b>Tarjetas de
+                            crédito</b></a>
+                        <a href="" class="list-group-item list-group-item-action disabled"><b>Direcciones</b></a>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-9">
+                <h3><span class="badge badge-danger badge-pill">{{orders_list|length}}</span> Compras realizadas</h3>
+                <hr>
+                <h3><span class="badge badge-danger badge-pill">{{ usuario|wishlist_counter:request.user.id }}</span> Favoritos guardados</h3>
+                <hr>
+                <h3><span class="badge badge-danger badge-pill">{% if usuario|basketlist_counter:request.user.id %}{{usuario|basketlist_counter:request.user.id}}{% else %}0{% endif %}</span> Publicaciones en el carrito de compras</h3>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -5,6 +5,7 @@ from shopping_basket.models import Shopping_basketItem
 from publications.models import Category, SubCategory
 from information.models import AboutUs, Privacy, FAQ
 from orders.models import Orders
+from registration.models import Plastic_money
 
 # from privacyPolicy.models import Privacy
 # from faq.models import FAQ
@@ -61,3 +62,7 @@ def privacy():
 @register.simple_tag
 def faq():
     return FAQ.objects.all()
+
+@register.simple_tag(takes_context=True)
+def payment_methods(context):
+    return Plastic_money.objects.filter(owner_profile=context['user'].id)
