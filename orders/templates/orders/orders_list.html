@@ -12,9 +12,9 @@
         <h4 class="display-4">Lista de pedidos</h4>
         <div class="row py-4">
             <div class="col-md-12">
-                    {% if 'success' in request.GET %}
-                        <button id="success" style="display:none"></button>
-                    {% endif %}
+                {% if 'success' in request.GET %}
+                <button id="success" style="display:none"></button>
+                {% endif %}
                 {% if orders_list %}
                 {% for pedido in orders_list %}
                 <div class="card my-2 bg-light text-primary">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <h4 class="">{{pedido.product}}</h4>
                                         <h5>$<b>{{pedido.subtotal}}</b> x{{pedido.quantity}} </h5>
                                         <p>Folio del pedido: <b>{{pedido.folio}}</b> </p>
@@ -45,7 +45,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="row">
                                             <div class="col-md-12 text-right">
                                                 {% if pedido.payment_status == 1 %}
@@ -56,7 +56,8 @@
                                                         class="btn btn-secondary w-100">Pagar</a>
                                                 </p>
                                                 {% else %}
-                                                <p class="text-success">{{pedido.get_payment_status_display}} (************{{pedido.payment_method.card_number|slice:"12:16"}})<i
+                                                <p class="text-success">{{pedido.get_payment_status_display}}
+                                                    (************{{pedido.payment_method.card_number|slice:"12:16"}}) <i
                                                         class="fa fa-check"></i></p>
                                                 {% endif %}
 
@@ -64,8 +65,9 @@
                                                 <p class="text-danger">{{pedido.get_shipping_status_display}} <i
                                                         class="fa fa-clock-o"></i></p>
                                                 {% elif pedido.shipping_status == 2 %}
-                                                <p class="text-warning">{{pedido.get_shipping_status_display}} <i
-                                                        class="fa fa-clock-o"></i></p>
+                                                <p class="text-warning">{{pedido.get_shipping_status_display}}. (N.
+                                                    rastreo: {{pedido.shipping_tracker}}) <i class="fa fa-clock-o"></i>
+                                                </p>
                                                 {% else %}
                                                 <p class="text-success">{{pedido.get_shipping_status_display}} <i
                                                         class="fa fa-check"></i></p>
@@ -97,15 +99,14 @@
         </div>
     </div>
     <script>
-        if(document.getElementById('success')){
+        if (document.getElementById('success')) {
             $.growl.notice({
-            duration: 7500,
-            size: 'large',
-            title: "Hurra!!",
-            message: "Se ha procesado su pago exitosamente, pronto recibirá información de su paquete y número de rastreo 👍🏼"
-        });
+                duration: 7500,
+                size: 'large',
+                title: "Hurra!!",
+                message: "Se ha procesado su pago exitosamente, pronto recibirá información de su paquete y número de rastreo 👍🏼"
+            });
         }
-        
     </script>
 </main>
 

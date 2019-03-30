@@ -33,8 +33,13 @@ class OrderCreate(View):
         _folio = datetime.datetime.now().strftime("%y%m%d%H%M%S")+str(randint(1000, 9999))
         _publication = Publication.objects.get(id=_product)
         _newPublicationStock = _publication.stock-int(_quantity)
+        print('publicacion:',_publication)
         Orders(folio=_folio, customer=_customer,product=_publication,quantity=_quantity,subtotal=_subtotal).save()
-        Shopping_basketItem.objects.get(customer = _customer,publication=_publication).delete()
+        try:
+            Shopping_basketItem.objects.get(customer = _customer,publication=_publication).delete()
+        except:
+            print('No existe el objeto en el basket_list')
+        
         Publication.objects.filter(id = _product).update(stock = _newPublicationStock)
         data = {
             'result':1

@@ -25,49 +25,68 @@
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <h3 class="card-title"><b>{{publication.product}}</b></h3>
+
                                     </div>
                                 </div>
                                 <p>
                                     <small>Publicado el <b>{{publication.created|date:"d M, Y"}}</b></small> <br>
                                     <small>Actualizado el <b>{{publication.updated|date:"d M, Y"}}</b></small>
                                 </p>
+                                <p><small>
+                                        ({{publication.stock}} disponibles)
+                                    </small></p>
                                 <hr>
                                 <h2><b>${{publication.price|intcomma}}</b></h4>
+                                    <input type="text" name="txtsubtotal" id="txtsubtotal" value="{{publication.price}}">
                                     <hr>
-                                    <p>Categoría: <br><b>{{publication.category}}</b> {% if publication.subcategory %}<b> -> {{publication.subcategory}}</b>{% endif %}</p>
+                                    <p>Categoría: <br><b>{{publication.category}}</b>
+                                        {% if publication.subcategory %}<b> ->
+                                            {{publication.subcategory}}</b>{% endif %}</p>
+
                                     <hr>
-                                    <a href="#" class="btn btn-secondary text-white w-100 disabled">Comprar ahora</a>
+                                    {% if publication.stock > 0 %}
+                                    <button onclick="orderProductHandler()" class="btn btn-secondary text-white w-100">Comprar ahora</button>
                                     <div class="row">
                                         <div id="colBtnsBasketlist" class="col-6 py-2">
-                                            
+
                                             {% if basket_list %}
                                             {% for basketItem in basket_list %}
 
                                             {% if basketItem.publication_id == publication.id %}
-                                            <input style="display:none" type="text" name="basketPublicationId" id="basketPublicationId" value="{{basketItem.publication_id}}">
-                                            <button onclick="basketListDeleteItemHandler(event)" class="btn btn-primary w-100">Eliminar del
+                                            <input style="display:none" type="text" name="basketPublicationId"
+                                                id="basketPublicationId" value="{{basketItem.publication_id}}">
+                                            <button onclick="basketListDeleteItemHandler(event)"
+                                                class="btn btn-primary w-100">Eliminar del
                                                 carrito</button>
                                             {% endif %}
                                             {% endfor %}
-                                            
+
                                             {% endif %}
                                         </div>
                                         <div id="colBtnsWishlist" class="col-6 py-2">
                                             {% for deseado in wish_list %}
                                             {% if deseado.publication_id == publication.id %}
 
-                                            <button onclick="wishListDeleteHandler(event)" class="btn btn-secondary w-100">Eliminar
-                                                de deseos</button><input style="display:none" type="text" name="txtProducto"
-                                                id="txtProducto" value="{{deseado.publication_id}}">
+                                            <button onclick="wishListDeleteHandler(event)"
+                                                class="btn btn-secondary w-100">Eliminar
+                                                de deseos</button><input style="display:none" type="text"
+                                                name="txtProducto" id="txtProducto" value="{{deseado.publication_id}}">
                                             {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
 
+                                    {% else %}
+                                    <div class="alert alert-danger" role="alert">
+                                        Publicacipon pausada
+                                    </div>
+                                    {% endif %}
                                     {% if user.is_authenticated and user == publication.seller %}
-                                    <p><a href="{% url 'publications:update' publication.id %}" class="btn btn-info w-100">Editar
+                                    <p><a href="{% url 'publications:update' publication.id %}"
+                                            class="btn btn-info w-100">Editar
                                             publicacion <i class="fa fa-pencil"></i></a></p>
-                                    <p><a href="{% url 'publications:delete' publication.id %}" class="btn btn-danger w-100">Borrar
+                                    <p><a href="{% url 'publications:delete' publication.id %}"
+                                            class="btn btn-danger w-100">Borrar
                                             publicación <i class="fa fa-exclamation-triangle"></i></a></p>
                                     {% endif %}
                             </div>
@@ -82,22 +101,23 @@
         </div>
     </div>
     <script src="{% static 'publications/js/publication_detail_wishlistHandler.js' %}"></script>
+    <script src="{% static 'publications/js/orderProductHandler.js' %}"></script>
     <script>
         var colWishlist = document.getElementById('colBtnsWishlist');
         if (colWishlist.childElementCount == 0) {
             colWishlist.innerHTML =
-                '<input style="display:none" type="text" name="txtProducto" id="txtProducto" value="{{publication.id}}">'+
+                '<input style="display:none" type="text" name="txtProducto" id="txtProducto" value="{{publication.id}}">' +
                 '<button onclick="wishListAddHandler(event)" class="btn btn-secondary w-100">Agregar a deseos</button>'
         }
 
         var colBasketList = document.getElementById('colBtnsBasketlist');
-        if(colBasketList.childElementCount == 0){
-            colBasketList.innerHTML=
-            '<input type="text" style="display:none" name="basketPublicationId" id="basketPublicationId" value="{{publication.id}}">'+
-                                            '<button onclick="basketListAddItemHandler(event)" class="btn btn-primary w-100">Agregar al '+
-                                                'carrito</button>'
+        if (colBasketList.childElementCount == 0) {
+            colBasketList.innerHTML =
+                '<input type="text" style="display:none" name="basketPublicationId" id="basketPublicationId" value="{{publication.id}}">' +
+                '<button onclick="basketListAddItemHandler(event)" class="btn btn-primary w-100">Agregar al ' +
+                'carrito</button>'
         }
     </script>
-    
+
 </main>
 {% endblock %}
