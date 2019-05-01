@@ -87,7 +87,7 @@
                             <div class="col-md-9 text-right">
                                 <h4 id="txtTotalProductos">Productos ()</h4>
                                 {% if request.user.profile.address %}
-                                <h4>Envío a <b>{{request.user.profile.address|truncatechars:40}}</b> <a href="{% url 'profile' %}"
+                                <h4 class="text-primary">Envío a <b>{{request.user.profile.address|truncatechars:40}}</b> <a href="{% url 'profile' %}"
                                         class="btn btn-outline-secondary"><i class="fa fa-pencil"></i></a></h4>
                                 {% else %}
                                 Envío a <a href="{% url 'profile' %}" class="link">Agregar dirección</a>

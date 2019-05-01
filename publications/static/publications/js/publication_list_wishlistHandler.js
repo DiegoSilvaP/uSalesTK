@@ -48,8 +48,10 @@ function wishListAddHandler(event) {
         error: function () {
             $.growl.error({
                 title: '',
-                message: "Por favor, inicia sesión para tener la mejor experiencia de compra 😎",
-                location: "bc"
+                size:'large',
+                fixed:true,
+                message: "<h6>Por favor, inicia sesión para tener la mejor experiencia de compra 😎</h6>",
+                // location: "bc"
             });
         }
     });
@@ -100,8 +102,10 @@ function basketListAddHandler(event) {
         error: function () {
             $.growl.error({
                 title: '',
-                message: "Por favor, inicia sesión para tener la mejor experiencia de compra 😎",
-                location: "bc"
+                size:'large',
+                fixed:true,
+                message: "<h6>Por favor, inicia sesión para tener la mejor experiencia de compra 😎</h6>",
+                // location: "bc"
             });
         }
     });

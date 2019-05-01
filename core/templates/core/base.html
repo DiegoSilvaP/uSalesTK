@@ -35,7 +35,7 @@
 <body>
         <!-- Navegación -->
         <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top border-bottom border-secondary">
-            <div class="container"> <a class="navbar-brand text-light" href="{% url 'publications:publications'%}">
+            <div class="container-fluid"> <a class="navbar-brand text-light" href="{% url 'publications:publications'%}">
                     <img src="{% static 'core/img/logo.png' %}" height="25">
                 </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
                     data-target="#navbar4" aria-expanded="true">
@@ -54,7 +54,6 @@
                     </div>
                 </div>
                 <div class="navbar-collapse text-center collapse" id="navbar4">
-
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
                         <li class="nav-item">
@@ -70,7 +69,7 @@
                             <div class="btn-group">
                                 <button class="btn btn-link dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">{{request.user.first_name|truncatechars:9}}</button>
-                                <div class="dropdown-menu">
+                                <div class="dropdown-menu profile-drop">
                                     
                                     {% if request.user.profile.avatar %}
                                     <a href="{% url 'profile' %}">
@@ -161,11 +160,11 @@
                     <div class="p-4 col-md-6">
                         <h2 class="mb-4">Contacto</h2>
                         <p class=""> <a href="#" class="">
-                                <i class="fa d-inline mr-3 text-muted fa-phone"></i>+246 - 542 550 5462</a> </p>
+                                <i class="fa d-inline mr-3 text-muted fa-phone"></i>+52 1 775 119 3477</a> </p>
                         <p> <a href="#" class="">
-                                <i class="fa d-inline mr-3 text-muted fa-envelope-o"></i>info@brand.com</a> </p>
+                                <i class="fa d-inline mr-3 text-muted fa-envelope-o"></i>contacto@usales.tk</a> </p>
                         <p> <a href="#" class="">
-                                <i class="fa d-inline mr-3 fa-map-marker text-muted"></i>365 Park Street, NY</a> </p>
+                                <i class="fa d-inline mr-3 fa-map-marker text-muted"></i>Tulancingo, HGO.</a> </p>
                     </div>
                 </div>
                 <div class="row">

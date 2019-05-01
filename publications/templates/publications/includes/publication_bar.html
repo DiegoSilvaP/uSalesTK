@@ -19,7 +19,7 @@
                     <a class="nav-link"
                         href="{% url 'information:about_us' aboutus.id aboutus.title|slugify %}">{{aboutus}}</a>
                     {% else %}
-                    <a class="nav-link disabled" href="#">Acerca de</a>
+                    <a class="nav-link disabled" href="#">Quiénes somos</a>
                     {% endif %}
                 </li>
                 <li class="nav-item mx-2 ">
@@ -45,13 +45,13 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                             {% for categoria in categories %} {% if categoria.get_subcategory_count > 0 %}
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item" tabindex="-1" href="#">
+                                <a class="dropdown-item disabled" tabindex="-1" href="#">
                                     {{categoria}}
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for subcategoria in categoria.get_subcategories %}
                                     <li>
-                                        <a class="dropdown-item" tabindex="-1" href="#">{{subcategoria}}</a>
+                                        <a class="dropdown-item disabled" tabindex="-1" href="#">{{subcategoria}}</a>
                                     </li>
                                     {% if forloop.last == False %}
                                     <div class="dropdown-divider"></div>

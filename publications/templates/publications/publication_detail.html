@@ -37,7 +37,7 @@
                                     </small></p>
                                 <hr>
                                 <h2><b>${{publication.price|intcomma}}</b></h4>
-                                    <input type="text" name="txtsubtotal" id="txtsubtotal" value="{{publication.price}}">
+                                    <input type="text" name="txtsubtotal" id="txtsubtotal" value="{{publication.price}}" style="display:none">
                                     <hr>
                                     <p>Categoría: <br><b>{{publication.category}}</b>
                                         {% if publication.subcategory %}<b> ->

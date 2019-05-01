@@ -13,7 +13,7 @@
         <div class="row py-4">
             <div class="col-md-12">
                 {% if 'success' in request.GET %}
-                <button id="success" style="display:none"></button>
+                <p id="success" style="display:none"></p>
                 {% endif %}
                 {% if orders_list %}
                 {% for pedido in orders_list %}
@@ -103,8 +103,8 @@
             $.growl.notice({
                 duration: 7500,
                 size: 'large',
-                title: "Hurra!!",
-                message: "Se ha procesado su pago exitosamente, pronto recibirá información de su paquete y número de rastreo 👍🏼"
+                title: "<h4>Hurra!! ❤</h4>",
+                message: "<h6>Se ha procesado su pago exitosamente, pronto recibirá información de su paquete y número de rastreo</h6>"
             });
         }
     </script>

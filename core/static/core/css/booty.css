@@ -4448,6 +4448,10 @@ input[type="button"].btn-block {
   float: none;
 }
 
+.profile-drop{
+  left:-10vmin;
+}
+
 .navbar-text {
   display: inline-block;
   padding-top: 0.5rem;
@@ -10682,4 +10686,29 @@ a.text-dark:focus {
 
 .dropdown-submenu:hover>.dropdown-menu {
   display: block;
+}
+
+/* scroll-bar style */
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+  
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #222831; 
 }
