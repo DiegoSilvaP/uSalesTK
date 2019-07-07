@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_filters',
     'information.apps.InformationConfig',
     'orders.apps.OrdersConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -147,8 +148,21 @@ LOGOUT_REDIRECT_URL = 'publications:publications'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+DEFAULT_FILE_STORAGE = 'carrito.custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'carrito.custom_azure.AzureStaticStorage'
+
+STATIC_LOCATION = "static"
+MEDIA_LOCATION = "media"
+
+AZURE_ACCOUNT_NAME = "usales"
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+
+CKEDITOR_BASEPATH = f'{STATIC_URL}ckeditor/ckeditor/'
 
 # Emails
 if DEBUG:
@@ -160,8 +174,9 @@ else:
 
 
 # Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Custom header
 ADMIN_SITE_HEADER = "uSalesTK"
+django_heroku.settings(locals())
